@@ -1,16 +1,29 @@
-import { useState } from 'react'
-import './App.css'
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Header from './components/Header';
+import TierListPage from './pages/TierListPage';
+import GamesPage from './pages/GamesPage';
+import GameFormPage from './pages/GameFormPage';
+import HallOfFamePage from './pages/HallOfFamePage';
+import SettingsPage from './pages/SettingsPage';
+import './App.css';
 
+// Muestra la cabecera
+// Carga el componente de la pagina dependiendo de la ruta actual
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-    </>
-  )
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Navigate to="/Games" replace />} />
+        <Route path="/TierList" element={<TierListPage />} />
+        <Route path="/Games" element={<GamesPage />} />
+        <Route path="/GameForm" element={<GameFormPage />} />
+        <Route path="/HallOfFame" element={<HallOfFamePage />} />
+        <Route path="/Settings" element={<SettingsPage />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;

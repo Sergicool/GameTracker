@@ -1,0 +1,55 @@
+/* Cabecera centrada sobre fondo casi negro */
+.header {
+    position: relative;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(#212129);
+    box-shadow: 0 4px 12px #070707;
+}
+
+/* ------------------- Contenedores ------------------- */
+
+.nav-links {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap: 10%; /* Espaciado entre enlaces */
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.side-menu {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+/* ------------------- Enlaces ------------------- */
+  
+
+/* Enlaces por defecto */
+.header a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-family: 'Lucida Console';
+    transition: color 0.2s, text-shadow 0.2s;
+}
+
+/* Enlace activo */
+.header a.active {
+    color: #00d9ff;
+    text-shadow: 0 0 10px #30aed88c, 0 0 30px #30aed88c, 0 0 60px #30aed88c;
+}
+
+/* Hover */
+.header a:hover {
+    color: #00ade7;
+}
+  
