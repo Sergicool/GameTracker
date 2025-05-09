@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import GameCard from '../components/GameCard';
+import './GamesPage.css';
 
 function GamesPage() {
   const [games, setGames] = useState([]);
@@ -13,25 +15,20 @@ function GamesPage() {
   }, []);
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div className="games-page">
       <h2>Lista de Juegos Registrados</h2>
 
       {games.length === 0 ? (
         <p>No hay juegos registrados aún.</p>
       ) : (
-        <ul>
+        <div className="games-grid">
           {games.map((game, i) => (
-            <li key={i}>
-              {game.title} ({game.year}) - Género: {game.genre}
-            </li>
+            <GameCard key={i} game={game} />
           ))}
-        </ul>
+        </div>
       )}
 
-      <button
-        style={{ marginTop: '1rem' }}
-        onClick={() => navigate('/GameForm')}
-      >
+      <button className="add-game-btn" onClick={() => navigate('/GameForm')}>
         Añadir Nuevo Juego
       </button>
     </div>

@@ -5,7 +5,7 @@ import TierListPage from './pages/TierListPage';
 import GamesPage from './pages/GamesPage';
 import GameFormPage from './pages/GameFormPage';
 import HallOfFamePage from './pages/HallOfFamePage';
-import SettingsPage from './pages/SettingsPage';
+import UpdateDataPage from './pages/UpdateDataPage';
 import './App.css';
 
 // Muestra la cabecera
@@ -20,7 +20,7 @@ function App() {
         <Route path="/Games" element={<GamesPage />} />
         <Route path="/GameForm" element={<GameFormPage />} />
         <Route path="/HallOfFame" element={<HallOfFamePage />} />
-        <Route path="/Settings" element={<SettingsPage />} />
+        <Route path="/UpdateData" element={<UpdateDataPage />} />
       </Routes>
     </div>
   );

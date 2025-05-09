@@ -4,7 +4,6 @@ import './MenuButton.css';
 
 const MenuButton = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -12,8 +11,8 @@ const MenuButton = () => {
     setIsOpen(!isOpen);
   };
 
-  const goToSettings = () => {
-    navigate('/Settings');
+  const goToUpdateData = () => {
+    navigate('/UpdateData');
     setIsOpen(false);
   };
 
@@ -42,11 +41,15 @@ const MenuButton = () => {
 
       {isOpen && (
         <div className="dropdown-menu">
-          <button className="dropdown-item" onClick={goToSettings}>
-            Settings
+          <button className="dropdown-item" onClick={() => navigate('/GameForm')}>
+            🆕 New game
+          </button>
+          <button className="dropdown-item" onClick={goToUpdateData}>
+            🆙 Update data
           </button>
         </div>
       )}
+
     </div>
   );
 };
