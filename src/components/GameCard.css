@@ -1,3 +1,4 @@
+/* General */
 .game-card {
     background-color: #2a2a2a;
     color: white;
@@ -5,21 +6,31 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 300px;
+    min-height: 300px;
+    min-width: 300px;
+    max-height: 400px;
+    max-width: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
+    transition: transform 0.1s ease;
 }
 
 .game-card:hover {
-    transform: translateY(-4px);
+    transform: scale(106%)
+}
+
+/* Head */
+.card-head {
+    padding: 4%;
 }
 
 .card-image {
     width: 100%;
-    height: 160px;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
+    border-radius: 5px;
 }
 
+/* Body */
 .card-body {
     padding: 0.75rem;
     flex: 1;
@@ -30,10 +41,11 @@
 
 .card-title {
     font-size: 1.1rem;
-    margin: 0 0 0.5rem;
+    margin: 0 0 0rem;
 }
 
 .card-year {
+    font-weight: bold;
     font-size: 0.9rem;
     opacity: 0.8;
 }
@@ -42,6 +54,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.3rem;
+    overflow: hidden;
 }
 
 .genre-tag {
@@ -51,4 +64,147 @@
     padding: 0.2rem 0.5rem;
     border-radius: 12px;
     white-space: nowrap;
+}
+
+.genre-tag-more {
+  background-color: #555;
+  font-style: italic;
+  color: #ccc;
+}
+
+/* Modal of the card that displays on click*/
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #2a2a2a;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  color: white;
+  position: relative;
+  text-align: center;
+}
+
+/* Imagen */
+.modal-image {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Año */
+.modal-year {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ccc;
+  justify-content: flex-start;
+}
+
+.modal-year-value {
+  font-weight: bold;
+  color: white;
+  background-color: #444;
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+}
+
+/* Origen */
+.modal-origin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ccc;
+  justify-content: flex-start;
+}
+
+.modal-origin-value {
+  font-weight: bold;
+  color: white;
+  background-color: #444;
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+}
+
+/* Category */
+.modal-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ccc;
+  justify-content: flex-start;
+}
+
+.modal-category-value {
+  font-weight: bold;
+  color: white;
+  background-color: #444;
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+}
+
+/* Genres */
+.modal-genres-wrapper {
+  background-color: rgba(255, 255, 255, 0.05); /* sutil transparencia */
+  border: 1px solid rgba(255, 255, 255, 0.1);  /* borde tenue */
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-genres {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.modal-genre-tag {
+  color: white;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 9999px; /* Fully rounded tag */
+  background-color: #444; /* fallback in case JS fails */
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  text-transform: capitalize;
+}
+
+/* Buttons */
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.edit-button, .delete-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.edit-button {
+  background-color: #43a4b1;
+  color: white;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
 }
