@@ -14,11 +14,17 @@ function GamesPage() {
     }
   }, []);
 
+  const handleDeleteGame = (id) => {
+    const updatedGames = games.filter(game => game.id !== id);
+    setGames(updatedGames);
+    localStorage.setItem('games', JSON.stringify(updatedGames));
+  };
+
   return (
     <div className="games-container">
       <section className="games-grid">
         {games.map((game) => (
-          <GameCard key={game.id} game={game} />
+          <GameCard key={game.id} game={game} onDelete={handleDeleteGame} />
         ))}
       </section>
     </div>

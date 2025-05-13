@@ -23,6 +23,19 @@ function GameFormPage() {
       setGenreList(parsed.genres || []);
       setYearOptions(parsed.years || []);
     }
+
+    const editData = localStorage.getItem('editGame');
+    if (editData) {
+      const game = JSON.parse(editData);
+      setName(game.name || '');
+      setImageUrl(game.image || '');
+      setImagePreview(game.image || '');
+      setYearPlayed(game.year || '');
+      setOrigin(game.origin || '');
+      setCategory(game.category || '');
+      setSubcategory(game.subcategory || '');
+      setSelectedGenres(game.genres || []);
+    }
   }, []);
 
   const handleImageChange = (e) => {
@@ -45,23 +58,44 @@ function GameFormPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newGame = {
-      id: Date.now(),
-      name,
-      image: imageUrl,
-      year: yearPlayed,
-      origin,
-      category,
-      subcategory,
-      genres: selectedGenres,
-      tier: null,
-      tierPosition: null,
-      isFavorite: false,
-    };
     const stored = localStorage.getItem('games');
     const parsed = stored ? JSON.parse(stored) : [];
-    parsed.push(newGame);
-    localStorage.setItem('games', JSON.stringify(parsed));
+
+    const editData = localStorage.getItem('editGame');
+    let updatedGames;
+
+    if (editData) {
+      const editing = JSON.parse(editData);
+      const updatedGame = {
+        ...editing,
+        name,
+        image: imageUrl,
+        year: yearPlayed,
+        origin,
+        category,
+        subcategory,
+        genres: selectedGenres,
+      };
+      updatedGames = parsed.map((g) => (g.id === editing.id ? updatedGame : g));
+      localStorage.removeItem('editGame');
+    } else {
+      const newGame = {
+        id: Date.now(),
+        name,
+        image: imageUrl,
+        year: yearPlayed,
+        origin,
+        category,
+        subcategory,
+        genres: selectedGenres,
+        tier: null,
+        tierPosition: null,
+        isFavorite: false,
+      };
+      updatedGames = [...parsed, newGame];
+    }
+
+    localStorage.setItem('games', JSON.stringify(updatedGames));
     navigate('/Games');
   };
 
@@ -169,6 +203,7 @@ function GameFormPage() {
               subcategory,
               origin,
             }}
+            disableGameCardModal = {true}
           />
         )}
       </div>

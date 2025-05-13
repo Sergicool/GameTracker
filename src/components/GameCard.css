@@ -14,8 +14,9 @@
     transition: transform 0.1s ease;
 }
 
-.game-card:hover {
-    transform: scale(106%)
+.game-card:hover:not(.no-hover) {
+  transform: scale(106%);
+  cursor: pointer;
 }
 
 /* Head */
@@ -157,8 +158,8 @@
 
 /* Genres */
 .modal-genres-wrapper {
-  background-color: rgba(255, 255, 255, 0.05); /* sutil transparencia */
-  border: 1px solid rgba(255, 255, 255, 0.1);  /* borde tenue */
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   padding: 1rem;
   margin-top: 1rem;
@@ -176,8 +177,8 @@
   color: white;
   font-size: 0.85rem;
   padding: 0.3rem 0.6rem;
-  border-radius: 9999px; /* Fully rounded tag */
-  background-color: #444; /* fallback in case JS fails */
+  border-radius: 20px;
+  background-color: #444;
   transition: transform 0.2s ease, background-color 0.2s ease;
   text-transform: capitalize;
 }

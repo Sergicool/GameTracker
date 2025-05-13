@@ -2,12 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import './GameCard.css';
 import getGenreColor from '../utils/getGenreColor';
 
-function GameCard({ game }) {
+function GameCard({ game, onDelete, disableGameCardModal = false }) {
 
   // State to control whether the modal is open or closed
   const [showModal, setShowModal] = useState(false);
   // Open the modal
-  const openModal = () => setShowModal(true);
+  const openModal = () => {
+    if (!disableGameCardModal) setShowModal(true);
+  }
   // Closes the modal when clicking outside
   const closeModal = (e) => {
     if (e.target.className === 'modal-overlay') setShowModal(false);
@@ -36,15 +38,30 @@ function GameCard({ game }) {
     // If there are more hidden genres, reserve a space for the +N tag
     const adjustedCount = count < game.genres.length ? count - 1 : count;
     setVisibleCount(Math.max(0, adjustedCount));
+
   }, [game.genres]);
 
   const visibleGenres = game.genres.slice(0, visibleCount);
   const hiddenCount = game.genres.length - visibleCount;
 
+  const handleDelete = () => {
+    const confirm = window.confirm(`Are you sure you want to delete "${game.name}"? \n This action can\'t be undone.`);
+    if (confirm) {
+      // Delete the game from the storage by id
+      const storedGames = JSON.parse(localStorage.getItem('games')) || [];
+      const updatedGames = storedGames.filter(g => g.id !== game.id);
+      localStorage.setItem('games', JSON.stringify(updatedGames));
+      // Call onDelete prop
+      onDelete(game.id);
+      // Close the confirm window
+      setShowModal(false);
+    }
+  };
+
   return (
     <>
       {/* Main card showing a preview of the game */}
-      <div className="game-card" onClick={openModal}>
+      <div className={`game-card ${disableGameCardModal ? 'no-hover' : ''}`} onClick={openModal}>
         <div className="card-head">
           <img src={game.image} alt={game.name} className="card-image" />
         </div>
@@ -110,8 +127,16 @@ function GameCard({ game }) {
 
             {/* Action buttons: edit and delete */}
             <div className="modal-buttons">
-              <button className="edit-button">Editar</button>
-              <button className="delete-button">Eliminar</button>
+              <button className="edit-button"
+                onClick={() => {
+                  localStorage.setItem('editGame', JSON.stringify(game));
+                  window.location.href = '/GameForm'; // o usar useNavigate si estás en un router context
+                }}
+              >
+                Editar
+              </button>
+
+              <button className="delete-button" onClick={handleDelete}>Eliminar</button>
             </div>
           </div>
         </div>
