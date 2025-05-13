@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameCard from '../components/GameCard';
 import './GameFormPage.css';
@@ -14,7 +14,10 @@ function GameFormPage() {
   const [genreList, setGenreList] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [yearOptions, setYearOptions] = useState([]);
+
   const navigate = useNavigate();
+  const isEditingRef = useRef(false);
+  const initialFormRef = useRef({});
 
   useEffect(() => {
     const data = localStorage.getItem('gameUpdateData');
@@ -35,8 +38,46 @@ function GameFormPage() {
       setCategory(game.category || '');
       setSubcategory(game.subcategory || '');
       setSelectedGenres(game.genres || []);
+      isEditingRef.current = true;
+
+      initialFormRef.current = {
+        name: game.name || '',
+        image: game.image || '',
+        year: game.year || '',
+        origin: game.origin || '',
+        category: game.category || '',
+        subcategory: game.subcategory || '',
+        genres: game.genres || [],
+      };
     }
+
+    const handleBeforeUnload = (e) => {
+      if (hasUnsavedChanges()) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      localStorage.removeItem('editGame');
+    };
   }, []);
+
+  const hasUnsavedChanges = () => {
+    const initial = initialFormRef.current;
+    return (
+      name !== initial.name ||
+      imageUrl !== initial.image ||
+      yearPlayed !== initial.year ||
+      origin !== initial.origin ||
+      category !== initial.category ||
+      subcategory !== initial.subcategory ||
+      JSON.stringify(selectedGenres) !== JSON.stringify(initial.genres)
+    );
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -77,7 +118,6 @@ function GameFormPage() {
         genres: selectedGenres,
       };
       updatedGames = parsed.map((g) => (g.id === editing.id ? updatedGame : g));
-      localStorage.removeItem('editGame');
     } else {
       const newGame = {
         id: Date.now(),
@@ -96,13 +136,23 @@ function GameFormPage() {
     }
 
     localStorage.setItem('games', JSON.stringify(updatedGames));
+    localStorage.removeItem('editGame');
+    navigate('/Games');
+  };
+
+  const handleCancel = () => {
+    if (hasUnsavedChanges()) {
+      const confirmLeave = window.confirm('Tienes cambios sin guardar. ¿Seguro que quieres salir?');
+      if (!confirmLeave) return;
+    }
+    localStorage.removeItem('editGame');
     navigate('/Games');
   };
 
   return (
     <div className="form-page">
       <form onSubmit={handleSubmit} className="game-form">
-        <h2>Registrar Nuevo Juego</h2>
+        <h2>{isEditingRef.current ? 'Editar Juego' : 'Registrar Nuevo Juego'}</h2>
 
         <label>
           Nombre del juego
@@ -187,7 +237,10 @@ function GameFormPage() {
           </div>
         </div>
 
-        <button type="submit">Guardar Juego</button>
+        <div className="form-buttons">
+          <button type="submit">Guardar Juego</button>
+          <button type="button" onClick={handleCancel}>Cancelar</button>
+        </div>
       </form>
 
       <div className="preview">
@@ -203,7 +256,7 @@ function GameFormPage() {
               subcategory,
               origin,
             }}
-            disableGameCardModal = {true}
+            disableGameCardModal={true}
           />
         )}
       </div>
