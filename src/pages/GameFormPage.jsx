@@ -156,7 +156,7 @@ function GameFormPage() {
 
         <label>
           Nombre del juego
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required disabled={isEditingRef.current}/>
         </label>
 
         <label>
@@ -238,7 +238,7 @@ function GameFormPage() {
         </div>
 
         <div className="form-buttons">
-          <button type="submit">Guardar Juego</button>
+          <button type="submit">{isEditingRef.current ? 'Guardar Cambios' : 'Guardar Juego'}</button>
           <button type="button" onClick={handleCancel}>Cancelar</button>
         </div>
       </form>
