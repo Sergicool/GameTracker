@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePrompt } from '../utils/usePrompt'; // Custom hook to block navigation when there are unsaved changes
 import GameCard from '../components/GameCard';
 import './GameFormPage.css';
 
 function GameFormPage() {
+  // State variables for form fields
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
@@ -11,15 +13,18 @@ function GameFormPage() {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [origin, setOrigin] = useState('');
-  const [genreList, setGenreList] = useState([]);
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [yearOptions, setYearOptions] = useState([]);
+  const [genreList, setGenreList] = useState([]); // List of available genres from localStorage
+  const [selectedGenres, setSelectedGenres] = useState([]); // Genres selected in the form
+  const [yearOptions, setYearOptions] = useState([]); // Available years
 
   const navigate = useNavigate();
-  const isEditingRef = useRef(false);
-  const initialFormRef = useRef({});
+
+  // Refs for values that should not trigger re-renders
+  const isEditingRef = useRef(false); // True if editing an existing game
+  const initialFormRef = useRef({}); // Stores the initial state of the form for comparison
 
   useEffect(() => {
+    // Load available years and genres from localStorage
     const data = localStorage.getItem('gameUpdateData');
     if (data) {
       const parsed = JSON.parse(data);
@@ -27,6 +32,7 @@ function GameFormPage() {
       setYearOptions(parsed.years || []);
     }
 
+    // Load game data if in edit mode
     const editData = localStorage.getItem('editGame');
     if (editData) {
       const game = JSON.parse(editData);
@@ -40,6 +46,7 @@ function GameFormPage() {
       setSelectedGenres(game.genres || []);
       isEditingRef.current = true;
 
+      // Store initial values for unsaved changes detection
       initialFormRef.current = {
         name: game.name || '',
         image: game.image || '',
@@ -51,34 +58,24 @@ function GameFormPage() {
       };
     }
 
+    // Warn user before leaving the page if there are unsaved changes
     const handleBeforeUnload = (e) => {
       if (hasUnsavedChanges()) {
         e.preventDefault();
-        e.returnValue = '';
+        e.returnValue = ''; // Required for Chrome to show the warning
       }
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
 
+    // Cleanup on unmount
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      localStorage.removeItem('editGame');
+      localStorage.removeItem('editGame'); // Clear edit mode data
     };
   }, []);
 
-  const hasUnsavedChanges = () => {
-    const initial = initialFormRef.current;
-    return (
-      name !== initial.name ||
-      imageUrl !== initial.image ||
-      yearPlayed !== initial.year ||
-      origin !== initial.origin ||
-      category !== initial.category ||
-      subcategory !== initial.subcategory ||
-      JSON.stringify(selectedGenres) !== JSON.stringify(initial.genres)
-    );
-  };
-
+  // Handle image file selection and preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -91,12 +88,14 @@ function GameFormPage() {
     }
   };
 
+  // Toggle selected genres on checkbox click
   const handleGenreToggle = (genre) => {
     setSelectedGenres((prev) =>
       prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
     );
   };
 
+  // Save form data on submit
   const handleSubmit = (e) => {
     e.preventDefault();
     const stored = localStorage.getItem('games');
@@ -106,6 +105,7 @@ function GameFormPage() {
     let updatedGames;
 
     if (editData) {
+      // Edit existing game
       const editing = JSON.parse(editData);
       const updatedGame = {
         ...editing,
@@ -119,6 +119,7 @@ function GameFormPage() {
       };
       updatedGames = parsed.map((g) => (g.id === editing.id ? updatedGame : g));
     } else {
+      // Add new game
       const newGame = {
         id: Date.now(),
         name,
@@ -136,10 +137,11 @@ function GameFormPage() {
     }
 
     localStorage.setItem('games', JSON.stringify(updatedGames));
-    localStorage.removeItem('editGame');
-    navigate('/Games');
+    localStorage.removeItem('editGame'); // Clear edit state
+    navigate('/Games'); // Navigate back to the games list
   };
 
+  // Cancel form and go back, showing a confirmation dialog if there are unsaved changes
   const handleCancel = () => {
     if (hasUnsavedChanges()) {
       const confirmLeave = window.confirm('Tienes cambios sin guardar. ¿Seguro que quieres salir?');
@@ -149,30 +151,40 @@ function GameFormPage() {
     navigate('/Games');
   };
 
+  // Checks if current form values differ from initial ones
+  const hasUnsavedChanges = () => {
+    const initial = initialFormRef.current;
+    return (
+      name !== initial.name ||
+      imageUrl !== initial.image ||
+      yearPlayed !== initial.year ||
+      origin !== initial.origin ||
+      category !== initial.category ||
+      subcategory !== initial.subcategory ||
+      JSON.stringify(selectedGenres) !== JSON.stringify(initial.genres)
+    );
+  };
+
+  // Activate navigation blocking if there are unsaved changes
+  usePrompt('Tienes cambios sin guardar. ¿Seguro que quieres salir?', hasUnsavedChanges());
+
   return (
     <div className="form-page">
       <form onSubmit={handleSubmit} className="game-form">
-        <h2>{isEditingRef.current ? 'Editar Juego' : 'Registrar Nuevo Juego'}</h2>
+        <h2>{isEditingRef.current ? 'Edit game' : 'Add new game'}</h2>
 
-        <label>
-          Nombre del juego
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required disabled={isEditingRef.current}/>
-        </label>
+        <label>Name of the game</label>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} required disabled={isEditingRef.current}/>
 
-        <label>
-          Imagen
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-        </label>
+        <label>Cover image</label>
+        <input type="file" accept="image/*" onChange={handleImageChange} />
 
-        <label>
-          Año jugado
-          <select value={yearPlayed} onChange={(e) => setYearPlayed(e.target.value)} required>
-            <option value="">Seleccionar año</option>
-            {yearOptions.map((y, i) => (
-              <option key={i} value={y}>{y}</option>
-            ))}
-          </select>
-        </label>
+        <label>Year played</label>
+        <select value={yearPlayed} onChange={(e) => setYearPlayed(e.target.value)} required>
+          {yearOptions.map((y, i) => (
+            <option key={i} value={y}>{y}</option>
+          ))}
+        </select>
 
         <label>
           Origen
@@ -194,6 +206,7 @@ function GameFormPage() {
           </select>
         </label>
 
+        {/* Subcategory dropdown appears conditionally based on selected category */}
         {category && (
           <label>
             Subcategoría
@@ -243,6 +256,7 @@ function GameFormPage() {
         </div>
       </form>
 
+      {/* Game preview panel */}
       <div className="preview">
         <h3>Vista previa</h3>
         {name && (
