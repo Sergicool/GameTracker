@@ -1,39 +1,43 @@
-/* GameFormPage.css */
-
 /* General page styles */
 .form-page {
   display: flex;
-  justify-content: center;  /* Centra todo el contenido */
-  align-items: flex-start;  /* Alinea los elementos en la parte superior */
-  padding: 20px;
-  gap: 20px;
-  height: 100vh;  /* Hacer que la página ocupe toda la altura de la ventana */
+  justify-content: space-between; /* Space between form and preview */
+  align-items: center; /* Vertically center content */
+  padding: 40px;
+  gap: 40px;
+  height: 100vh; /* Full height */
+  background-color: #121212; /* Dark background */
+  color: #f0f0f0; /* Light text by default */
+  box-sizing: border-box;
 }
 
-h2 {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-/* Form styles */
+/* Form container */
 .game-form {
   flex: 1;
   max-width: 500px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-right: 20px;  /* Espacio entre el formulario y la vista previa */
+  padding: 30px;
+  background-color: #1e1e1e; /* Slightly lighter than background */
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
+/* Titles */
+h2, h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* Inputs */
 input[type="text"],
 select,
 input[type="file"] {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  color: #f0f0f0;
   border-radius: 4px;
   font-size: 14px;
 }
@@ -45,10 +49,38 @@ input[type="file"]:focus {
   outline: none;
 }
 
-input[type="checkbox"] {
-  margin-right: 10px;
+/* Labels */
+label {
+  display: block;
+  margin: 10px 0 5px;
+  font-size: 14px;
+  color: #cccccc;
 }
 
+/* Checkbox */
+input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #4b8ef7; /* Modern checkbox highlight */
+}
+
+/* Genre list styling */
+.genre-box h4 {
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.genre-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.genre-list label {
+  font-size: 14px;
+  color: #dddddd;
+}
+
+/* Buttons */
 button {
   background-color: #4b8ef7;
   color: white;
@@ -65,32 +97,12 @@ button:hover {
 }
 
 button:disabled {
-  background-color: #ddd;
+  background-color: #444;
+  color: #aaa;
   cursor: not-allowed;
 }
 
-label {
-  display: block;
-  margin: 10px 0 5px;
-  font-size: 14px;
-  color: #555;
-}
-
-/* Genre list styling */
-.genre-list label {
-  display: inline-block;
-  margin-right: 15px;
-  font-size: 14px;
-  color: #555;
-}
-
-.genre-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Form buttons styling */
+/* Buttons container */
 .form-buttons {
   display: flex;
   justify-content: space-between;
@@ -99,19 +111,22 @@ label {
 
 .form-buttons button {
   width: 48%;
-  padding: 10px 20px;
 }
 
-/* Preview styling */
+/* Preview area */
 .preview {
   flex: 1;
   max-width: 350px;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
 
 .preview h3 {
-  text-align: center;
-  font-size: 20px;
   margin-bottom: 20px;
+  color: #ffffff;
 }
 
 /* Responsive Design */
@@ -119,7 +134,8 @@ label {
   .form-page {
     flex-direction: column;
     align-items: center;
-    padding: 10px;  /* Reduce padding in smaller screens */
+    padding: 20px;
+    gap: 20px;
   }
 
   .game-form,
@@ -130,16 +146,10 @@ label {
 
   .form-buttons {
     flex-direction: column;
-    align-items: center;
   }
 
   .form-buttons button {
     width: 100%;
     margin-bottom: 10px;
-  }
-
-  .preview {
-    max-width: 100%;
-    margin-top: 20px;
   }
 }

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePrompt } from '../utils/usePrompt'; // Custom hook to block navigation when there are unsaved changes
-import GameCard from '../components/GameCard';
-import './GameFormPage.css';
+import { usePrompt } from '../utils/usePrompt';
+import GameForm from '../components/GameForm';
+import GamePreview from '../components/GamePreview';
 
 function GameFormPage() {
-  // State variables for form fields
+  // State and refs
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
@@ -13,18 +13,16 @@ function GameFormPage() {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [origin, setOrigin] = useState('');
-  const [genreList, setGenreList] = useState([]); // List of available genres from localStorage
-  const [selectedGenres, setSelectedGenres] = useState([]); // Genres selected in the form
-  const [yearOptions, setYearOptions] = useState([]); // Available years
+  const [genreList, setGenreList] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [yearOptions, setYearOptions] = useState([]);
 
+  const isEditingRef = useRef(false);
+  const initialFormRef = useRef({});
   const navigate = useNavigate();
 
-  // Refs for values that should not trigger re-renders
-  const isEditingRef = useRef(false); // True if editing an existing game
-  const initialFormRef = useRef({}); // Stores the initial state of the form for comparison
-
+  // Load initial data
   useEffect(() => {
-    // Load available years and genres from localStorage
     const data = localStorage.getItem('gameUpdateData');
     if (data) {
       const parsed = JSON.parse(data);
@@ -32,7 +30,6 @@ function GameFormPage() {
       setYearOptions(parsed.years || []);
     }
 
-    // Load game data if in edit mode
     const editData = localStorage.getItem('editGame');
     if (editData) {
       const game = JSON.parse(editData);
@@ -46,7 +43,6 @@ function GameFormPage() {
       setSelectedGenres(game.genres || []);
       isEditingRef.current = true;
 
-      // Store initial values for unsaved changes detection
       initialFormRef.current = {
         name: game.name || '',
         image: game.image || '',
@@ -58,24 +54,20 @@ function GameFormPage() {
       };
     }
 
-    // Warn user before leaving the page if there are unsaved changes
     const handleBeforeUnload = (e) => {
       if (hasUnsavedChanges()) {
         e.preventDefault();
-        e.returnValue = ''; // Required for Chrome to show the warning
+        e.returnValue = '';
       }
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // Cleanup on unmount
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      localStorage.removeItem('editGame'); // Clear edit mode data
+      localStorage.removeItem('editGame');
     };
   }, []);
 
-  // Handle image file selection and preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -88,14 +80,25 @@ function GameFormPage() {
     }
   };
 
-  // Toggle selected genres on checkbox click
   const handleGenreToggle = (genre) => {
     setSelectedGenres((prev) =>
       prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
     );
   };
 
-  // Save form data on submit
+  const hasUnsavedChanges = () => {
+    const initial = initialFormRef.current;
+    return (
+      name !== initial.name ||
+      imageUrl !== initial.image ||
+      yearPlayed !== initial.year ||
+      origin !== initial.origin ||
+      category !== initial.category ||
+      subcategory !== initial.subcategory ||
+      JSON.stringify(selectedGenres) !== JSON.stringify(initial.genres)
+    );
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const stored = localStorage.getItem('games');
@@ -105,7 +108,6 @@ function GameFormPage() {
     let updatedGames;
 
     if (editData) {
-      // Edit existing game
       const editing = JSON.parse(editData);
       const updatedGame = {
         ...editing,
@@ -119,7 +121,6 @@ function GameFormPage() {
       };
       updatedGames = parsed.map((g) => (g.id === editing.id ? updatedGame : g));
     } else {
-      // Add new game
       const newGame = {
         id: Date.now(),
         name,
@@ -137,11 +138,10 @@ function GameFormPage() {
     }
 
     localStorage.setItem('games', JSON.stringify(updatedGames));
-    localStorage.removeItem('editGame'); // Clear edit state
-    navigate('/Games'); // Navigate back to the games list
+    localStorage.removeItem('editGame');
+    navigate('/Games');
   };
 
-  // Cancel form and go back, showing a confirmation dialog if there are unsaved changes
   const handleCancel = () => {
     if (hasUnsavedChanges()) {
       const confirmLeave = window.confirm('Tienes cambios sin guardar. ¿Seguro que quieres salir?');
@@ -151,129 +151,41 @@ function GameFormPage() {
     navigate('/Games');
   };
 
-  // Checks if current form values differ from initial ones
-  const hasUnsavedChanges = () => {
-    const initial = initialFormRef.current;
-    return (
-      name !== initial.name ||
-      imageUrl !== initial.image ||
-      yearPlayed !== initial.year ||
-      origin !== initial.origin ||
-      category !== initial.category ||
-      subcategory !== initial.subcategory ||
-      JSON.stringify(selectedGenres) !== JSON.stringify(initial.genres)
-    );
-  };
-
-  // Activate navigation blocking if there are unsaved changes
   usePrompt('Tienes cambios sin guardar. ¿Seguro que quieres salir?', hasUnsavedChanges());
 
   return (
     <div className="form-page">
-      <form onSubmit={handleSubmit} className="game-form">
-        <h2>{isEditingRef.current ? 'Edit game' : 'Add new game'}</h2>
+      <GameForm
+        name={name}
+        setName={setName}
+        imageUrl={imageUrl}
+        handleImageChange={handleImageChange}
+        yearPlayed={yearPlayed}
+        setYearPlayed={setYearPlayed}
+        yearOptions={yearOptions}
+        origin={origin}
+        setOrigin={setOrigin}
+        category={category}
+        setCategory={setCategory}
+        subcategory={subcategory}
+        setSubcategory={setSubcategory}
+        genreList={genreList}
+        selectedGenres={selectedGenres}
+        handleGenreToggle={handleGenreToggle}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+        isEditing={isEditingRef.current}
+      />
 
-        <label>Name of the game</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} required disabled={isEditingRef.current}/>
-
-        <label>Cover image</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-
-        <label>Year played</label>
-        <select value={yearPlayed} onChange={(e) => setYearPlayed(e.target.value)} required>
-          {yearOptions.map((y, i) => (
-            <option key={i} value={y}>{y}</option>
-          ))}
-        </select>
-
-        <label>
-          Origen
-          <select value={origin} onChange={(e) => setOrigin(e.target.value)} required>
-            <option value="">Seleccionar origen</option>
-            <option value="Indie">Indie</option>
-            <option value="Doble A">Doble A</option>
-            <option value="Triple A">Triple A</option>
-          </select>
-        </label>
-
-        <label>
-          Categoría principal
-          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
-            <option value="">Categoría principal</option>
-            <option value="Singleplayer">Singleplayer</option>
-            <option value="Mixto">Mixto</option>
-            <option value="Multijugador">Multijugador</option>
-          </select>
-        </label>
-
-        {/* Subcategory dropdown appears conditionally based on selected category */}
-        {category && (
-          <label>
-            Subcategoría
-            <select value={subcategory} onChange={(e) => setSubcategory(e.target.value)} required>
-              <option value="">Subcategoría</option>
-              {category === 'Singleplayer' && (
-                <>
-                  <option value="One time story">One time story</option>
-                  <option value="Replayable by gameplay">Replayable by gameplay</option>
-                  <option value="Recurring by content">Recurring by content</option>
-                </>
-              )}
-              {category === 'Mixto' && (
-                <>
-                  <option value="Flexible">Flexible</option>
-                  <option value="Cooperative">Cooperative</option>
-                </>
-              )}
-              {category === 'Multijugador' && (
-                <>
-                  <option value="PvP">PvP</option>
-                  <option value="PvE">PvE</option>
-                </>
-              )}
-            </select>
-          </label>
-        )}
-
-        <div className="genre-box">
-          <h4>Géneros</h4>
-          <div className="genre-list">
-            {genreList.map((g, i) => (
-              <label key={i}>
-                <input
-                  type="checkbox"
-                  checked={selectedGenres.includes(g.genre)}
-                  onChange={() => handleGenreToggle(g.genre)}
-                /> {g.genre}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div className="form-buttons">
-          <button type="submit">{isEditingRef.current ? 'Guardar Cambios' : 'Guardar Juego'}</button>
-          <button type="button" onClick={handleCancel}>Cancelar</button>
-        </div>
-      </form>
-
-      {/* Game preview panel */}
-      <div className="preview">
-        <h3>Vista previa</h3>
-        {name && (
-          <GameCard
-            game={{
-              name,
-              image: imagePreview,
-              year: yearPlayed,
-              genres: selectedGenres,
-              category,
-              subcategory,
-              origin,
-            }}
-            disableGameCardModal={true}
-          />
-        )}
-      </div>
+      <GamePreview
+        name={name}
+        imagePreview={imagePreview}
+        yearPlayed={yearPlayed}
+        selectedGenres={selectedGenres}
+        category={category}
+        subcategory={subcategory}
+        origin={origin}
+      />
     </div>
   );
 }

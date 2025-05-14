@@ -1,0 +1,27 @@
+.genre-box {
+  margin-top: 20px;
+}
+
+.genre-box h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.genre-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.genre-list label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #dddddd;
+}
+
+.genre-list input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: #4b8ef7;
+}
