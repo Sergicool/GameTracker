@@ -49,10 +49,10 @@ function GameCard({ game, onDelete, disableGameCardModal = false }) {
     if (confirm) {
       // Delete the game from the storage by id
       const storedGames = JSON.parse(localStorage.getItem('games')) || [];
-      const updatedGames = storedGames.filter(g => g.id !== game.id);
+      const updatedGames = storedGames.filter(g => g.name !== game.name);
       localStorage.setItem('games', JSON.stringify(updatedGames));
       // Call onDelete prop
-      onDelete(game.id);
+      onDelete(game.name);
       // Close the confirm window
       setShowModal(false);
     }
@@ -63,7 +63,7 @@ function GameCard({ game, onDelete, disableGameCardModal = false }) {
       {/* Main card showing a preview of the game */}
       <div className={`game-card ${disableGameCardModal ? 'no-hover' : ''}`} onClick={openModal}>
         <div className="card-head">
-          <img src={game.image} alt={game.name} className="card-image" />
+          <img src={game.image} className="card-image" />
         </div>
         <div className="card-body">
           <h3 className="card-title">{game.name}</h3>

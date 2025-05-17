@@ -6,43 +6,48 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 300px;
-    min-width: 300px;
-    max-height: 400px;
-    max-width: 400px;
+    width: 380px;    /* ancho fijo */
+    height: 340px;   /* alto fijo */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.1s ease;
 }
 
 .game-card:hover:not(.no-hover) {
-  transform: scale(106%);
-  cursor: pointer;
+    transform: scale(1.06);
+    cursor: pointer;
 }
 
 /* Head */
 .card-head {
-    padding: 4%;
+    padding: 3%;
 }
 
+/* Imagen con tamaño fijo */
 .card-image {
     width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: 5px;
+    height: 180px;              /* altura fija para la imagen */
+    object-fit: cover;          /* escala y recorta para llenar el espacio */
+    border-radius: 5px;         /* bordes redondeados solo arriba */
+    background-color: #444;
 }
 
-/* Body */
+/* Cuerpo de la tarjeta */
 .card-body {
     padding: 0.75rem;
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    overflow: hidden;  /* para evitar que contenido extra desborde */
 }
 
+
+/* Título y texto */
 .card-title {
     font-size: 1.1rem;
-    margin: 0 0 0rem;
+    margin: 0 0 0.5rem 0;
+    white-space: nowrap;      /* evitar salto de línea */
+    overflow: hidden;
+    text-overflow: ellipsis; /* ... si el texto es muy largo */
 }
 
 .card-year {
@@ -51,11 +56,13 @@
     opacity: 0.8;
 }
 
+/* Géneros con salto de línea y espacio controlado */
 .card-genres {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.3rem;
+    gap: 0.4rem;
     overflow: hidden;
+    max-height: 3rem;  /* limitar altura para que no crezca demasiado */
 }
 
 .genre-tag {

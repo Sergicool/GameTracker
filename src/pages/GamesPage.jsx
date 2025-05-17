@@ -14,8 +14,8 @@ function GamesPage() {
     }
   }, []);
 
-  const handleDeleteGame = (id) => {
-    const updatedGames = games.filter(game => game.id !== id);
+  const handleDeleteGame = (name) => {
+    const updatedGames = games.filter(game => game.name !== name);
     setGames(updatedGames);
     localStorage.setItem('games', JSON.stringify(updatedGames));
   };

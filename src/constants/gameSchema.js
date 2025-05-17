@@ -9,7 +9,6 @@ export const CATEGORIES = {
 export const TIERS = ["S", "A", "B", "C", "D", "E"];
 
 export const DEFAULT_GAME = {
-    id: "",
     name: "",
     imageUrl: "",
     yearPlayed: null,
