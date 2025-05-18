@@ -8,9 +8,10 @@ function GamesPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const stored = localStorage.getItem('games');
-    if (stored) {
-      setGames(JSON.parse(stored));
+    const stored = localStorage.getItem('gameTrackerData');
+    const data = stored ? JSON.parse(stored) : { games: [] };
+    if (data) {
+      setGames(data.games || []);
     }
   }, []);
 

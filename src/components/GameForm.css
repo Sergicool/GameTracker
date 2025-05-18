@@ -1,26 +1,43 @@
-/* GameFormPage.css */
+/* Fondo general con gradiente animado */
+body {
+  background: linear-gradient(120deg, #1b1b1b, #242424);
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-/* Contenedor principal con distribución horizontal */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Contenedor principal */
 .form-page {
   display: flex;
-  justify-content: center;     /* Centra horizontalmente todo el bloque */
-  align-items: center;         /* Centra verticalmente */
-  gap: 100px;                   /* Espacio entre form y preview */
-  min-height: 100vh;           /* Ocupa toda la altura visible */
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  min-height: 100vh;
   box-sizing: border-box;
   flex-wrap: nowrap;
 }
 
+/* Caja del formulario */
 .game-form {
   flex: 1;
   max-width: 30%;
   padding: 30px;
-  background-color: #1e1e1e;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(145deg, #1e1e1e, #161616);
+  border-radius: 12px;
+  box-shadow: 
+    inset 0 0 10px rgba(255, 255, 255, 0.02),
+    0 10px 30px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   color: #f0f0f0;
 }
 
+/* Título */
 .game-form-title {
   text-align: center;
   font-size: 24px;
@@ -28,34 +45,76 @@
   color: #ffffff;
 }
 
-.game-form label {
-  display: block;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #cccccc;
+/* Input del nombre*/
+.game-input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.3s, color 0.3s;
+}
+.game-input.disabled {
+  color: #757575 !important; /* Obligar al navegador a usar este estilo */
+  cursor: not-allowed;
 }
 
-.game-form input[type="text"],
-.game-form select,
-.game-form input[type="file"] {
+/* Imagen */
+/* Ocultar input por defecto */
+input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+/* Input personalizado*/
+.custom-file-label {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
   background-color: #2a2a2a;
   border: 1px solid #444;
-  border-radius: 4px;
+  border-radius: 6px;
   color: #f0f0f0;
   font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.custom-file-label:hover {
+  background-color: #3f3f3f;
 }
 
+/* Etiquetas */
+.game-form label {
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #cccccc;
+}
+
+/* Inputs y selects */
+.game-form input[type="text"],
+.game-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #f0f0f0;
+  font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Enfocados */
 .game-form input[type="text"]:focus,
 .game-form select:focus,
 .game-form input[type="file"]:focus {
   border-color: #4b8ef7;
   outline: none;
+  box-shadow: 0 0 6px rgba(75, 142, 247, 0.5);
 }
 
+/* Botones */
 .form-buttons {
   display: flex;
   justify-content: space-between;
@@ -68,26 +127,30 @@
   background-color: #4b8ef7;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(75, 142, 247, 0.3);
 }
 
 .form-buttons button:hover {
   background-color: #357bcd;
+  box-shadow: 0 0 12px rgba(75, 142, 247, 0.5);
 }
 
 .form-buttons button:disabled {
   background-color: #444;
   color: #aaa;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
+/* Grupos horizontales */
 .horizontal-group {
   flex: 1;
   display: flex;
-  gap: 20px;
+  gap: 40px;
   justify-content: space-between;
 }
 
@@ -95,6 +158,7 @@
   flex: 1;
 }
 
-.single-group{
+/* Espaciado */
+.single-group {
   margin-right: 5%;
 }

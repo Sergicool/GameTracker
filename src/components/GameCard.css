@@ -1,6 +1,6 @@
 /* General */
 .game-card {
-    background-color: #2a2a2a;
+    background: linear-gradient(170deg, #353535, #111111);
     color: white;
     border-radius: 8px;
     overflow: hidden;

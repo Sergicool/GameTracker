@@ -1,0 +1,14 @@
+.help-icon {
+  float: right;
+  margin-bottom: 2px;
+  color: #919191;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.help-icon:hover {
+  color: #000;
+}

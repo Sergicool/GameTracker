@@ -16,8 +16,6 @@ export const DEFAULT_GAME = {
     category: "",
     subcategory: "",
     genres: [],
-
     tier: null,
     tierPosition: null,
-    isFavoriteOfYear: false
 };

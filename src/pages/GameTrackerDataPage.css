@@ -1,0 +1,252 @@
+.update-data-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1rem 2rem;
+  background: #1e1e2f;
+  color: white;
+  min-height: 100vh;
+}
+
+/* Titulo */
+.update-data-page-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Secciones */
+.data-columns {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.data-section {
+  background-color: #2a2a3d;
+  border-radius: 12px;
+  padding: 1rem;
+  flex: 1 1 300px;
+  max-width: 350px;
+  box-shadow: 0 0 10px #111;
+  display: flex;
+  flex-direction: column;
+}
+
+.data-section-title {
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #555;
+  padding-bottom: 0.25rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.input-row input[type="text"],
+.input-row input[type="number"],
+.input-row input[type="color"] {
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+}
+
+.input-row input[type="text"],
+.input-row input[type="number"] {
+  flex: 1;
+}
+
+.input-row button {
+  background-color: #4caf50;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.input-row button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+.input-row button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.item-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+.item-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid #444;
+  font-weight: 600;
+}
+
+.btn-remove {
+  background-color: #e53935;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  color: white;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-remove:hover:not(:disabled) {
+  background-color: #c62828;
+}
+
+.btn-remove:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.tier-actions {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.tier-actions button {
+  background-color: #1976d2;
+  border: none;
+  border-radius: 6px;
+  padding: 0.25rem 0.4rem;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tier-actions button:hover:not(:disabled) {
+  background-color: #1565c0;
+}
+
+.tier-actions button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.action-buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.action-buttons button,
+.upload-label {
+  background-color: #00695c;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.action-buttons button:disabled {
+  background-color: #444;
+  cursor: not-allowed;
+}
+
+.action-buttons button:hover:not(:disabled),
+.upload-label:hover {
+  background-color: #004d40;
+}
+
+.upload-label input {
+  display: none;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(20, 20, 30, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background-color: #2a2a3d;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 0 20px #111;
+  color: white;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.modal-content ul {
+  margin-top: 0;
+  padding-left: 1.2rem;
+}
+
+.modal-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-buttons button {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.modal-buttons button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.modal-buttons button:first-child:hover {
+  background-color: #43a047;
+}
+
+.modal-buttons button:last-child {
+  background-color: #e53935;
+  color: white;
+}
+
+.modal-buttons button:last-child:hover {
+  background-color: #d32f2f;
+}

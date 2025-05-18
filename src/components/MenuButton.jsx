@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { FaPlus, FaEdit, FaList } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import './MenuButton.css';
 
 const MenuButton = () => {
@@ -11,12 +12,11 @@ const MenuButton = () => {
     setIsOpen(!isOpen);
   };
 
-  const goToUpdateData = () => {
-    navigate('/UpdateData');
+  const goToPageName = (namePage) => {
+    navigate(namePage);
     setIsOpen(false);
   };
 
-  // Cierra el menú si se hace clic fuera del contenedor
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -41,15 +41,21 @@ const MenuButton = () => {
 
       {isOpen && (
         <div className="dropdown-menu">
-          <button className="dropdown-item" onClick={() => navigate('/GameForm')}>
-            🆕 New game
+          <button className="dropdown-item" onClick={() => goToPageName('/GameForm')}>
+            <FaPlus/>
+            Add new game
           </button>
-          <button className="dropdown-item" onClick={goToUpdateData}>
-            🆙 Update data
+          <button className="dropdown-item" onClick={() => goToPageName('/UpdateTierList')}>
+            <FaList/>
+            Update tier list
+          </button>
+          <hr/>
+          <button className="dropdown-item" onClick={() => goToPageName('/UpdateData')}>
+            <FaEdit/>
+            Update data
           </button>
         </div>
       )}
-
     </div>
   );
 };

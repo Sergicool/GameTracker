@@ -28,11 +28,11 @@ function GameFormPage() {
   // useEffect para cargar datos iniciales y detectar si estamos editando un juego
   useEffect(() => {
     // Cargar datos globales del juego desde localStorage (géneros y años)
-    const data = localStorage.getItem('gameUpdateData');
+    const stored = localStorage.getItem('gameTrackerData');
+    const data = stored ? JSON.parse(stored) : { years: [], genres: [] };
     if (data) {
-      const parsed = JSON.parse(data);
-      setGenreList(parsed.genres || []);
-      setYearOptions(parsed.years || []);
+      setGenreList(data.genres || []);
+      setYearOptions(data.years || []);
     }
 
     // Si existe 'editGame' en localStorage, estamos en modo edición
@@ -116,14 +116,13 @@ function GameFormPage() {
 
   // Maneja el envío del formulario, tanto para crear como editar juegos
   const handleSubmit = () => {
-    // Obtener lista actual de juegos del localStorage
-    const stored = localStorage.getItem('games');
-    const parsed = stored ? JSON.parse(stored) : [];
+    const stored = localStorage.getItem('gameTrackerData');
+    const data = stored ? JSON.parse(stored) : { games: [] };
+    const parsed = data.games || [];
 
     let updatedGames;
 
     if (isEditingRef.current) {
-      // Si estamos editando, actualizamos el juego existente
       const editing = initialFormRef.current;
       const updatedGame = {
         ...editing,
@@ -137,7 +136,6 @@ function GameFormPage() {
       };
       updatedGames = parsed.map((g) => (g.name === editing.name ? updatedGame : g));
     } else {
-      // Si estamos creando un nuevo juego comprobar que no existe ya uno con ese nombre
       const nameExists = parsed.some((g) => g.name.toLowerCase().trim() === name.toLowerCase().trim());
       if (nameExists) {
         alert('Ya existe un juego con ese nombre. Por favor, elige otro nombre.');
@@ -154,15 +152,17 @@ function GameFormPage() {
         genres: selectedGenres,
         tier: null,
         tierPosition: null,
-        isFavorite: false,
       };
       updatedGames = [...parsed, newGame];
     }
 
-    // Guardamos la lista actualizada de juegos
-    localStorage.setItem('games', JSON.stringify(updatedGames));
+    const updatedData = {
+      ...data,
+      games: updatedGames,
+    };
 
-    // Actualizamos la referencia del formulario original para evitar falsos positivos de cambios
+    localStorage.setItem('gameTrackerData', JSON.stringify(updatedData));
+
     initialFormRef.current = {
       name,
       image: imageUrl,
@@ -173,10 +173,10 @@ function GameFormPage() {
       genres: selectedGenres,
     };
 
-    // Limpiamos datos de edición y redirigimos a la lista de juegos
     localStorage.removeItem('editGame');
     navigate('/Games', { replace: true });
   };
+
 
   // Maneja la cancelación del formulario (volver atrás con confirmación si hay cambios)
   const handleCancel = () => {
