@@ -30,7 +30,7 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
     setFilterData((prev) => ({
       ...prev,
       genres: data.genres || [],
-      years: [...new Set(data.years.map(String))],
+      years: Array.isArray(data.years) ? [...new Set(data.years.map(String))] : [],
     }));
   }, []);
 
