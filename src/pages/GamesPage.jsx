@@ -17,10 +17,22 @@ function GamesPage() {
   }, []);
 
   const handleDeleteGame = (name) => {
-    const updatedGames = games.filter((game) => game.name !== name);
-    setGames(updatedGames);
-    localStorage.setItem('gameTrackerData', JSON.stringify({ games: updatedGames }));
+    const stored = localStorage.getItem('gameTrackerData');
+    if (!stored) return;
+
+    const data = JSON.parse(stored);
+    const updatedGames = data.games.filter((game) => game.name !== name);
+
+    // Actualiza solo los juegos, mantiene el resto de los datos (years, genres, etc.)
+    const updatedData = {
+      ...data,
+      games: updatedGames,
+    };
+
+    localStorage.setItem('gameTrackerData', JSON.stringify(updatedData));
+    setGames(updatedGames); // También actualiza el estado local
   };
+
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
