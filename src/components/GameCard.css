@@ -52,8 +52,8 @@
 
 .card-year {
     font-weight: bold;
+    color: rgb(214, 218, 218);
     font-size: 0.9rem;
-    opacity: 0.8;
 }
 
 /* Géneros con salto de línea y espacio controlado */
@@ -109,7 +109,6 @@
 .modal-image {
   width: 100%;
   border-radius: 8px;
-  margin-bottom: 1rem;
 }
 
 /* Año */

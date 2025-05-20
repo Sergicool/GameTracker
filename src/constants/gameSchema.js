@@ -19,3 +19,41 @@ export const DEFAULT_GAME = {
     tier: null,
     tierPosition: null,
 };
+
+
+export const gameTrackerData = {
+    "genres": [
+        {
+            "genre": "Adventure",
+            "color": "#1e90ff"
+        }
+    ],
+    "years": [
+        2015
+    ],
+    "tiers": [
+        {
+            "name": "S",
+            "color": "#ff0000",
+            "position": 1
+        }
+    ],
+    "games": [
+        {
+            "name": "Dead Cells",
+            "year": "2020",
+            "origin": "Indie",
+            "category": "Singleplayer",
+            "subcategory": "Recurring by content",
+            "genres": [
+                "Souls-like",
+                "Roguevania",
+                "Platformer",
+                "Hardcore",
+                "Action"
+            ],
+            "tier": null,
+            "tierPosition": null
+        }
+    ]
+}

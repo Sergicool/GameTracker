@@ -1,0 +1,139 @@
+/* -------------------- Layout -------------------- */
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: width 0.2s ease;
+    background: linear-gradient(#212129, #181820);
+    color: white;
+    height: 100vh;
+    box-shadow: 0 0 20px rgba(0.7, 0, 0, 0);
+    overflow: hidden;
+}
+
+
+.sidebar.closed {
+    width: 50px !important;
+}
+
+/* -------------------- Button -------------------- */
+
+.toggle-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    background: #444;
+    border: none;
+    border-radius: 10%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* -------------------- Content -------------------- */
+
+.filters {
+    margin-bottom: 20px;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-label {
+    font-weight: bold;
+    margin-bottom: 6px;
+    margin-left: ;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #eee;
+}
+
+.pill-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.pill {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    user-select: none;
+    background-color: #333;
+    color: #ccc;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.pill:hover {
+    transform: scale(1.05);
+    background-color: #555;
+}
+
+.pill.selected {
+    background-color: #666;
+    color: white;
+    border-color: #888;
+}
+
+.pill.genre {
+    font-weight: bold;
+}
+
+.category-title {
+    margin-left: 10px;
+    font-style: italic;
+    font-size: 13px;
+    color: #ccc;
+    margin-top: 0.5rem;
+}
+
+.checkbox-pill {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-pill input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* Ocultar Scrollbar */
+.sidebar-content {
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+.sidebar-content::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+/* Resizer */
+.resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    cursor: ew-resize;
+    background-color: transparent;
+    z-index: 10;
+}
+
+.resizer:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
