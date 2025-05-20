@@ -90,6 +90,7 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
       <p className="filter-label">
         {icon} {label}
       </p>
+      <hr className="divider" />
       <div className="pill-container">
         {values.map((value) => {
           const isSelected = filterData[key].includes(value);
@@ -112,19 +113,20 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
       className={`sidebar ${isOpen ? 'open' : 'closed'}`}
       style={isOpen ? { width: sidebarWidth } : {}}
     >
-      <button className="toggle-button" onClick={toggleSidebar}>
-        {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
-      </button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px'}}>
+        <button className="toggle-button" onClick={toggleSidebar}>
+          {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+        </button>
+        {isOpen && <h2 className="sidebar-title">Games Filter</h2>}
+      </div>
 
       {isOpen && (
         <>
           <div className="sidebar-content">
             <div className="filters">
               <div className="filter-group">
-                <label htmlFor="groupBy" className="filter-label">
-                  <LayoutGrid size={16} style={{ marginRight: '4px' }} />
-                  Agrupar por:
-                </label>
+                <label htmlFor="groupBy" className="filter-label"> <LayoutGrid size={20} style={{ marginRight: '6px' }} /> Group by: </label>
+                <hr className="divider" />
                 <select
                   id="groupBy"
                   value={groupBy}
@@ -140,7 +142,8 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
 
               {/* Géneros con color */}
               <div className="filter-group">
-                <p className="filter-label"><Tag size={16} /> Géneros</p>
+                <p className="filter-label"><Tag size={20} style={{ marginRight: '6px' }} /> Genres</p>
+                <hr className="divider" />
                 <div className="pill-container">
                   {filterData.genres.map((g) => {
                     const isSelected = filterData.selectedGenres.includes(g.genre);
@@ -162,11 +165,12 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
                 </div>
               </div>
 
-              {renderPillList("Años", filterData.years, "selectedYears", <Calendar size={16} />)}
-              {renderPillList("Origen", ORIGINS, "selectedOrigins", <Globe size={16} />)}
+              {renderPillList("Years", filterData.years, "selectedYears", <Calendar size={20} style={{ marginRight: '6px' }} />)}
+              {renderPillList("Origin", ORIGINS, "selectedOrigins", <Globe size={20} style={{ marginRight: '6px' }} />)}
 
               <div className="filter-group">
-                <p className="filter-label"><LayoutGrid size={16} /> Categorías</p>
+                <p className="filter-label"><LayoutGrid size={20} style={{ marginRight: '6px' }} /> Categories</p>
+                <hr className="divider" />
                 {Object.entries(CATEGORIES).map(([cat, subs]) => (
                   <div key={cat}>
                     <p className="category-title">{cat}</p>
