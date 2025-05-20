@@ -16,9 +16,18 @@ function GamesPage() {
   }, []);
 
   const handleDeleteGame = (name) => {
-    const updatedGames = games.filter(game => game.name !== name);
+    const stored = localStorage.getItem('gameTrackerData');
+    const data = stored ? JSON.parse(stored) : { games: [] };
+
+    const updatedGames = data.games.filter(game => game.name !== name);
+
+    const updatedData = {
+      ...data,
+      games: updatedGames,
+    };
+    localStorage.setItem('gameTrackerData', JSON.stringify(updatedData));
+
     setGames(updatedGames);
-    localStorage.setItem('games', JSON.stringify(updatedGames));
   };
 
   return (

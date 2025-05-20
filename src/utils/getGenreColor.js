@@ -1,5 +1,5 @@
 export default function getGenreColor(genre) {
-  const stored = localStorage.getItem('gameUpdateData');
+  const stored = localStorage.getItem('gameTrackerData');
   if (!stored) return '#444'; // Default color
   try {
     const parsed = JSON.parse(stored);

@@ -240,13 +240,31 @@ function GameTrackerDataPage() {
   // --- Confirmar carga de backup ---
   const confirmLoadBackup = () => {
     if (!backupFile) return;
+
     setGenres(backupFile.genres);
     setYears(backupFile.years);
     setTiers(backupFile.tiers);
-    setSavedData({ genres: backupFile.genres, years: backupFile.years, tiers: backupFile.tiers });
+    setGames(backupFile.games || []); // Añadir esta línea
+
+    // Guardar en localStorage también
+    localStorage.setItem('gameTrackerData', JSON.stringify({
+      genres: backupFile.genres,
+      years: backupFile.years,
+      tiers: backupFile.tiers,
+      games: backupFile.games || []
+    }));
+
+    setSavedData({
+      genres: backupFile.genres,
+      years: backupFile.years,
+      tiers: backupFile.tiers,
+      games: backupFile.games || []
+    });
+
     setShowModal(false);
     alert('Backup cargado correctamente. Ten en cuenta que la base de datos se ha reemplazado.');
   };
+
 
   // --- Cancelar carga de backup ---
   const cancelLoadBackup = () => {

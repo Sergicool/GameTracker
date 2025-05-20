@@ -39,13 +39,11 @@ function GameCard({ game, onDelete, disableGameCardModal = false }) {
   const handleDelete = () => {
     const confirmDelete = window.confirm(`Are you sure you want to delete "${game.name}"?\nThis action can't be undone.`);
     if (confirmDelete) {
-      const storedGames = JSON.parse(localStorage.getItem('games')) || [];
-      const updatedGames = storedGames.filter(g => g.name !== game.name);
-      localStorage.setItem('games', JSON.stringify(updatedGames));
       onDelete(game.name);
       setShowModal(false);
     }
   };
+
 
   return (
     <>
