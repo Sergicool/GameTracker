@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './GameCard.css';
-import getGenreColor from '../utils/getGenreColor';
 import ModalBase from './ModalBase';
+import { setItem } from '../utils/db';
 
-function GameCard({ game, onDelete, disableGameCardModal = false }) {
+function GameCard({ game, onDelete, disableGameCardModal = false, genresWithColors = [] }) {
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -36,6 +36,12 @@ function GameCard({ game, onDelete, disableGameCardModal = false }) {
   const visibleGenres = game.genres.slice(0, visibleCount);
   const hiddenCount = game.genres.length - visibleCount;
 
+  // Nuevo getGenreColor usando la prop
+  const getGenreColor = (genre) => {
+    const found = genresWithColors.find(g => g.genre === genre);
+    return found?.color || '#444';
+  };
+
   const handleDelete = () => {
     const confirmDelete = window.confirm(`Are you sure you want to delete "${game.name}"?\nThis action can't be undone.`);
     if (confirmDelete) {
@@ -43,7 +49,6 @@ function GameCard({ game, onDelete, disableGameCardModal = false }) {
       setShowModal(false);
     }
   };
-
 
   return (
     <>
@@ -108,9 +113,10 @@ function GameCard({ game, onDelete, disableGameCardModal = false }) {
         </div>
 
         <div className="modal-buttons">
-          <button className="edit-button"
-            onClick={() => {
-              localStorage.setItem('editGame', JSON.stringify(game));
+          <button
+            className="edit-button"
+            onClick={async () => {
+              await setItem('editGame', game);
               window.location.href = '/GameForm';
             }}
           >

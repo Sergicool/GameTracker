@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import GenreSelector from './GenreSelector';
-import './GameCard';
 import './GameForm.css';
 import HelpModal from './HelpModal';
 import HelpIcon from './HelpIcon';

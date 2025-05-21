@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './Sidebar.css';
 import { ChevronLeft, ChevronRight, Calendar, Tag, Globe, LayoutGrid } from 'lucide-react';
+import { getItem } from '../utils/db';
 
 const ORIGINS = ["Indie", "Doble A", "Triple A"];
 const CATEGORIES = {
@@ -23,15 +24,18 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
   const resizingRef = useRef(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('gameTrackerData');
-    if (!stored) return;
+    async function fetchData() {
+      const stored = await getItem('gameTrackerData');
+      if (!stored) return;
 
-    const data = JSON.parse(stored);
-    setFilterData((prev) => ({
-      ...prev,
-      genres: data.genres || [],
-      years: Array.isArray(data.years) ? [...new Set(data.years.map(String))] : [],
-    }));
+      setFilterData((prev) => ({
+        ...prev,
+        genres: stored.genres || [],
+        years: Array.isArray(stored.years) ? [...new Set(stored.years.map(String))] : [],
+      }));
+    }
+
+    fetchData();
   }, []);
 
   useEffect(() => {

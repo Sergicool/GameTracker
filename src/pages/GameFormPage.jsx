@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { usePrompt } from '../utils/usePrompt';
 import GameForm from '../components/GameForm';
 import GameCard from '../components/GameCard';
+import { getItem, setItem, removeItem } from '../utils/db';
 
 function GameFormPage() {
   // Estados para almacenar los datos del formulario
@@ -17,6 +18,7 @@ function GameFormPage() {
   const [genreList, setGenreList] = useState([]); // Lista de todos los géneros disponibles
   const [selectedGenres, setSelectedGenres] = useState([]); // Géneros seleccionados por el usuario
   const [yearOptions, setYearOptions] = useState([]); // Años posibles para mostrar en el dropdown
+  const [genresWithColors, setGenresWithColors] = useState([]); // <-- Nuevo estado para géneros con colores
 
   // Refs para modo edición y para guardar el estado inicial del formulario
   const isEditingRef = useRef(false);
@@ -27,44 +29,38 @@ function GameFormPage() {
 
   // useEffect para cargar datos iniciales y detectar si estamos editando un juego
   useEffect(() => {
-    // Cargar datos globales del juego desde localStorage (géneros y años)
-    const stored = localStorage.getItem('gameTrackerData');
-    const data = stored ? JSON.parse(stored) : { years: [], genres: [] };
-    if (data) {
+    async function loadFormData() {
+      const data = (await getItem('gameTrackerData')) || { years: [], genres: [] };
       setGenreList(data.genres || []);
       setYearOptions(data.years || []);
+      setGenresWithColors(data.genres || []); // <-- Guardamos también los colores
+
+      const editData = await getItem('editGame');
+      if (editData) {
+        isEditingRef.current = true;
+        setName(editData.name || '');
+        setImageUrl(editData.image || '');
+        setImagePreview(editData.image || '');
+        setYearPlayed(editData.year || '');
+        setOrigin(editData.origin || '');
+        setCategory(editData.category || '');
+        setSubcategory(editData.subcategory || '');
+        setSelectedGenres(editData.genres || []);
+
+        initialFormRef.current = {
+          name: editData.name || '',
+          image: editData.image || '',
+          year: editData.year || '',
+          origin: editData.origin || '',
+          category: editData.category || '',
+          subcategory: editData.subcategory || '',
+          genres: editData.genres || [],
+        };
+      }
+
+      window.addEventListener('beforeunload', handleBeforeUnload);
     }
 
-    // Si existe 'editGame' en localStorage, estamos en modo edición
-    const editData = localStorage.getItem('editGame');
-    if (editData) {
-      isEditingRef.current = true;
-      
-      const game = JSON.parse(editData);
-
-      // Rellenamos el formulario con los datos del juego a editar
-      setName(game.name || '');
-      setImageUrl(game.image || '');
-      setImagePreview(game.image || '');
-      setYearPlayed(game.year || '');
-      setOrigin(game.origin || '');
-      setCategory(game.category || '');
-      setSubcategory(game.subcategory || '');
-      setSelectedGenres(game.genres || []);
-
-      // Guardamos una copia del estado inicial del formulario para detectar cambios
-      initialFormRef.current = {
-        name: game.name || '',
-        image: game.image || '',
-        year: game.year || '',
-        origin: game.origin || '',
-        category: game.category || '',
-        subcategory: game.subcategory || '',
-        genres: game.genres || [],
-      };
-    }
-
-    // Prevenir que el usuario cierre la página si hay cambios sin guardar
     const handleBeforeUnload = (e) => {
       if (hasUnsavedChanges()) {
         e.preventDefault();
@@ -72,15 +68,13 @@ function GameFormPage() {
       }
     };
 
-    // Añadir y limpiar el evento de beforeunload
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    loadFormData();
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      localStorage.removeItem('editGame'); // Limpieza del localStorage
+      removeItem('editGame');
     };
   }, []);
-
-  // Maneja la subida de imagen y la convierte en base64
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -93,14 +87,12 @@ function GameFormPage() {
     }
   };
 
-  // Alterna la selección de géneros en el estado
   const handleGenreToggle = (genre) => {
     setSelectedGenres((prev) =>
       prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
     );
   };
 
-  // Compara el formulario actual con el original para ver si hay cambios sin guardar
   const hasUnsavedChanges = () => {
     const initial = initialFormRef.current;
     return (
@@ -114,12 +106,9 @@ function GameFormPage() {
     );
   };
 
-  // Maneja el envío del formulario, tanto para crear como editar juegos
-  const handleSubmit = () => {
-    const stored = localStorage.getItem('gameTrackerData');
-    const data = stored ? JSON.parse(stored) : { games: [] };
-    const parsed = data.games || [];
-
+  const handleSubmit = async () => {
+    const stored = (await getItem('gameTrackerData')) || { games: [] };
+    const parsed = stored.games || [];
     let updatedGames;
 
     if (isEditingRef.current) {
@@ -156,12 +145,7 @@ function GameFormPage() {
       updatedGames = [...parsed, newGame];
     }
 
-    const updatedData = {
-      ...data,
-      games: updatedGames,
-    };
-
-    localStorage.setItem('gameTrackerData', JSON.stringify(updatedData));
+    await setItem('gameTrackerData', { ...stored, games: updatedGames });
 
     initialFormRef.current = {
       name,
@@ -173,27 +157,23 @@ function GameFormPage() {
       genres: selectedGenres,
     };
 
-    localStorage.removeItem('editGame');
+    await removeItem('editGame');
     navigate('/Games', { replace: true });
   };
 
-
-  // Maneja la cancelación del formulario (volver atrás con confirmación si hay cambios)
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (hasUnsavedChanges()) {
       const confirmLeave = window.confirm('Tienes cambios sin guardar. ¿Seguro que quieres salir?');
       if (!confirmLeave) return;
     }
-    localStorage.removeItem('editGame');
+    await removeItem('editGame');
     navigate('/Games', { replace: true });
   };
 
-  // Hook personalizado que bloquea navegación si hay cambios sin guardar
   usePrompt('Tienes cambios sin guardar. ¿Seguro que quieres salir?', hasUnsavedChanges());
 
   return (
     <div className="form-page">
-      {/* Formulario del juego */}
       <GameForm
         name={name}
         setName={setName}
@@ -216,7 +196,6 @@ function GameFormPage() {
         isEditing={isEditingRef.current}
       />
 
-      {/* Vista previa del juego mientras se edita */}
       <GameCard
         game={{
           name,
@@ -228,6 +207,7 @@ function GameFormPage() {
           origin,
         }}
         disableGameCardModal={true}
+        genresWithColors={genresWithColors} // <-- ✅ pasamos el prop correctamente
       />
     </div>
   );

@@ -3,6 +3,8 @@ import { FaPlus, FaTrashAlt, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { usePrompt } from '../utils/usePrompt';
 import './GameTrackerDataPage.css';
 
+import { getItem, setItem } from '../utils/db.js';
+
 function GameTrackerDataPage() {
   // Estados para inputs
   const [genre, setGenre] = useState('');
@@ -26,17 +28,28 @@ function GameTrackerDataPage() {
   const [showModal, setShowModal] = useState(false);
   const [backupSummary, setBackupSummary] = useState(null);
 
-  // Al montar, cargar datos de localStorage
+  // Al montar, cargar datos
   useEffect(() => {
-    const saved = localStorage.getItem('gameTrackerData');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      setGames(parsed.games || []);
-      setGenres(parsed.genres || []);
-      setYears(parsed.years || []);
-      setTiers(parsed.tiers || []);
-      setSavedData({ genres: parsed.genres || [], years: parsed.years || [], tiers: parsed.tiers || [] });
+    async function loadData() {
+      try {
+        const saved = await getItem('gameTrackerData');
+        if (saved) {
+          setGames(saved.games || []);
+          setGenres(saved.genres || []);
+          setYears(saved.years || []);
+          setTiers(saved.tiers || []);
+          setSavedData({
+            genres: saved.genres || [],
+            years: saved.years || [],
+            tiers: saved.tiers || [],
+            games: saved.games || [],
+          });
+        }
+      } catch (error) {
+        console.error('Error loading data from IndexedDB:', error);
+      }
     }
+    loadData();
   }, []);
 
   // Aviso antes de salir si hay cambios no guardados
@@ -189,11 +202,17 @@ function GameTrackerDataPage() {
 
   // --- Guardar todos los datos ---
 
-  const handleSaveChanges = () => {
-    localStorage.setItem('gameTrackerData', JSON.stringify({ genres, years, tiers, games }));
-    setSavedData({ genres, years, tiers, games });
-    alert('Changes saved!');
+  const handleSaveChanges = async () => {
+    try {
+      await setItem('gameTrackerData', { genres, years, tiers, games });
+      setSavedData({ genres, years, tiers, games });
+      alert('Changes saved!');
+    } catch (error) {
+      alert('Error saving changes');
+      console.error('Error saving data:', error);
+    }
   };
+
 
   // --- Backup completo ---
 
@@ -238,31 +257,34 @@ function GameTrackerDataPage() {
   };
 
   // --- Confirmar carga de backup ---
-  const confirmLoadBackup = () => {
+  const confirmLoadBackup = async () => {
     if (!backupFile) return;
 
     setGenres(backupFile.genres);
     setYears(backupFile.years);
     setTiers(backupFile.tiers);
-    setGames(backupFile.games || []); // Añadir esta línea
+    setGames(backupFile.games || []);
 
-    // Guardar en localStorage también
-    localStorage.setItem('gameTrackerData', JSON.stringify({
-      genres: backupFile.genres,
-      years: backupFile.years,
-      tiers: backupFile.tiers,
-      games: backupFile.games || []
-    }));
+    try {
+      await setItem('gameTrackerData', {
+        genres: backupFile.genres,
+        years: backupFile.years,
+        tiers: backupFile.tiers,
+        games: backupFile.games || []
+      });
+      setSavedData({
+        genres: backupFile.genres,
+        years: backupFile.years,
+        tiers: backupFile.tiers,
+        games: backupFile.games || []
+      });
 
-    setSavedData({
-      genres: backupFile.genres,
-      years: backupFile.years,
-      tiers: backupFile.tiers,
-      games: backupFile.games || []
-    });
-
-    setShowModal(false);
-    alert('Backup cargado correctamente. Ten en cuenta que la base de datos se ha reemplazado.');
+      setShowModal(false);
+      alert('Backup cargado correctamente. Ten en cuenta que la base de datos se ha reemplazado.');
+    } catch (error) {
+      alert('Error saving backup data.');
+      console.error('Error saving backup:', error);
+    }
   };
 
 

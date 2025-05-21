@@ -4,28 +4,45 @@ import GameCard from '../components/GameCard';
 import Sidebar from '../components/Sidebar';
 import './GamesPage.css';
 
+import { getItem, setItem } from '../utils/db.js';
+
 function GamesPage() {
   const [games, setGames] = useState([]);
   const [filters, setFilters] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [genresWithColors, setGenresWithColors] = useState([]);  // <-- nuevo estado para géneros
   const navigate = useNavigate();
 
   useEffect(() => {
-    const stored = localStorage.getItem('gameTrackerData');
-    const data = stored ? JSON.parse(stored) : { games: [] };
-    setGames(data.games || []);
+    async function fetchGames() {
+      try {
+        const stored = await getItem('gameTrackerData');
+        if (stored) {
+          setGames(stored.games || []);
+          setGenresWithColors(stored.genres || []);  // <-- cargamos géneros con colores aquí
+        }
+      } catch (error) {
+        console.error('Error loading games from IndexedDB:', error);
+        setGames([]);
+        setGenresWithColors([]);
+      }
+    }
+    fetchGames();
   }, []);
+  
+  const handleDeleteGame = async (name) => {
+    try {
+      const stored = await getItem('gameTrackerData');
+      if (!stored) return;
 
-  const handleDeleteGame = (name) => {
-    const stored = localStorage.getItem('gameTrackerData');
-    if (!stored) return;
+      const updatedGames = stored.games.filter((game) => game.name !== name);
+      const updatedData = { ...stored, games: updatedGames };
 
-    const data = JSON.parse(stored);
-    const updatedGames = data.games.filter((game) => game.name !== name);
-    const updatedData = { ...data, games: updatedGames };
-
-    localStorage.setItem('gameTrackerData', JSON.stringify(updatedData));
-    setGames(updatedGames);
+      await setItem('gameTrackerData', updatedData);
+      setGames(updatedGames);
+    } catch (error) {
+      console.error('Error deleting game:', error);
+    }
   };
 
   const handleFilterChange = (newFilters) => {
@@ -112,18 +129,23 @@ function GamesPage() {
     <div className="page-wrapper">
       <Sidebar
         isOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        onFilterChange={handleFilterChange}
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        onFilterChange={setFilters}
       />
       <div className={`games-container ${isSidebarOpen ? 'shifted' : ''}`}>
         <section className="games-warper">
-          {Object.entries(groupedGames).map(([groupName, groupGames]) => (
+          {Object.entries(groupGames(filterGames(games))).map(([groupName, groupGames]) => (
             groupGames.length > 0 && (
               <div key={groupName} className="group-section">
                 <h2 className="group-title">{groupName}</h2>
                 <div className="group-grid">
                   {groupGames.map((game) => (
-                    <GameCard key={game.name} game={game} onDelete={handleDeleteGame} />
+                    <GameCard
+                      key={game.name}
+                      game={game}
+                      onDelete={handleDeleteGame}
+                      genresWithColors={genresWithColors}  // <-- pasamos prop aquí
+                    />
                   ))}
                 </div>
               </div>
