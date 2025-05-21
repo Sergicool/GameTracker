@@ -1,77 +1,78 @@
 /* General */
 .game-card {
-    background: linear-gradient(170deg, #353535, #111111);
-    color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    width: 380px;    /* ancho fijo */
-    height: 340px;   /* alto fijo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.1s ease;
+  background: linear-gradient(170deg, #353535, #111111);
+  color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 380px;        /* ancho fijo, no min-width */
+  height: 340px;       /* alto fijo */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease;
+  flex-shrink: 0;      /* importante: evita que se reduzca el tamaño */
 }
 
 .game-card:hover:not(.no-hover) {
-    transform: scale(1.06);
-    cursor: pointer;
+  transform: scale(1.06);
+  cursor: pointer;
 }
 
 /* Head */
 .card-head {
-    padding: 3%;
+  padding: 3%;
 }
 
 /* Imagen con tamaño fijo */
 .card-image {
-    width: 100%;
-    height: 180px;              /* altura fija para la imagen */
-    object-fit: cover;          /* escala y recorta para llenar el espacio */
-    border-radius: 5px;         /* bordes redondeados solo arriba */
-    background-color: #444;
+  width: 100%;
+  height: 180px;              /* altura fija para la imagen */
+  object-fit: cover;          /* escala y recorta para llenar el espacio */
+  border-radius: 5px;         /* bordes redondeados solo arriba */
+  background-color: #444;
 }
 
 /* Cuerpo de la tarjeta */
 .card-body {
-    padding: 0.75rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;  /* para evitar que contenido extra desborde */
+  padding: 0.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;  /* para evitar que contenido extra desborde */
 }
 
 
 /* Título y texto */
 .card-title {
-    font-size: 1.1rem;
-    margin: 0 0 0.5rem 0;
-    white-space: nowrap;      /* evitar salto de línea */
-    overflow: hidden;
-    text-overflow: ellipsis; /* ... si el texto es muy largo */
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  white-space: nowrap;      /* evitar salto de línea */
+  overflow: hidden;
+  text-overflow: ellipsis; /* ... si el texto es muy largo */
 }
 
 .card-year {
-    font-weight: bold;
-    color: rgb(214, 218, 218);
-    font-size: 0.9rem;
+  font-weight: bold;
+  color: rgb(214, 218, 218);
+  font-size: 0.9rem;
 }
 
 /* Géneros con salto de línea y espacio controlado */
 .card-genres {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    overflow: hidden;
-    max-height: 3rem;  /* limitar altura para que no crezca demasiado */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  overflow: hidden;
+  max-height: 3rem;  /* limitar altura para que no crezca demasiado */
 }
 
 .genre-tag {
-    background-color: #444;
-    color: white;
-    font-size: 0.75rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 12px;
-    white-space: nowrap;
+  background-color: #444;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  white-space: nowrap;
 }
 
 .genre-tag-more {

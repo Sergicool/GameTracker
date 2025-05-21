@@ -35,37 +35,38 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
   }, []);
 
   useEffect(() => {
-    onFilterChange?.(filterData);
+    onFilterChange?.({ ...filterData, groupBy });
+  }, [filterData, groupBy]); // Se ejecuta solo cuando cambian estos valores
 
+  useEffect(() => {
     let animationFrameId;
 
     const handleMouseMove = (e) => {
-        if (!resizingRef.current) return;
+      if (!resizingRef.current) return;
 
-        const updateWidth = () => {
+      const updateWidth = () => {
         const newWidth = Math.max(180, Math.min(500, e.clientX));
         setSidebarWidth(newWidth);
-        };
+      };
 
-        // Cancela frames anteriores y solicita uno nuevo
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = requestAnimationFrame(updateWidth);
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(updateWidth);
     };
 
     const handleMouseUp = () => {
-        resizingRef.current = false;
-        cancelAnimationFrame(animationFrameId);
+      resizingRef.current = false;
+      cancelAnimationFrame(animationFrameId);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('mouseup', handleMouseUp);
-        cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      cancelAnimationFrame(animationFrameId);
     };
-    }, [filterData, onFilterChange]);
+  }, []); // <- Solo se ejecuta una vez al montar
 
   const handleMouseDown = () => {
     resizingRef.current = true;
