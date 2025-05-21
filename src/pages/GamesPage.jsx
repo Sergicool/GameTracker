@@ -131,6 +131,7 @@ function GamesPage() {
         isOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         onFilterChange={setFilters}
+        showGroupBy={true}
       />
       <div className={`games-container ${isSidebarOpen ? 'shifted' : ''}`}>
         <section className="games-warper">

@@ -10,7 +10,7 @@ const CATEGORIES = {
   Multijugador: ["PvP", "PvE"]
 };
 
-function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
+function Sidebar({ isOpen, toggleSidebar, onFilterChange, showGroupBy = true }) {
   const [groupBy, setGroupBy] = useState('All Games');
   const [filterData, setFilterData] = useState({
     genres: [],
@@ -129,21 +129,25 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
         <>
           <div className="sidebar-content">
             <div className="filters">
-              <div className="filter-group">
-                <label htmlFor="groupBy" className="filter-label"> <LayoutGrid size={20} style={{ marginRight: '6px' }} /> Group by: </label>
-                <hr className="divider" />
-                <select
-                  id="groupBy"
-                  value={groupBy}
-                  onChange={(e) => setGroupBy(e.target.value)}
-                >
-                  <option value="All Games">All Games</option>
-                  <option value="Genre">Genre</option>
-                  <option value="Year">Year</option>
-                  <option value="Origin">Origin</option>
-                  <option value="Category">Category</option>
-                </select>
-              </div>
+              {showGroupBy && (
+                <div className="filter-group">
+                  <label htmlFor="groupBy" className="filter-label">
+                    <LayoutGrid size={20} style={{ marginRight: '6px' }} /> Group by:
+                  </label>
+                  <hr className="divider" />
+                  <select
+                    id="groupBy"
+                    value={groupBy}
+                    onChange={(e) => setGroupBy(e.target.value)}
+                  >
+                    <option value="All Games">All Games</option>
+                    <option value="Genre">Genre</option>
+                    <option value="Year">Year</option>
+                    <option value="Origin">Origin</option>
+                    <option value="Category">Category</option>
+                  </select>
+                </div>
+              )}
 
               {/* Géneros con color */}
               <div className="filter-group">
