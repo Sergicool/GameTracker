@@ -31,7 +31,7 @@ function GameFormPage() {
   useEffect(() => {
     async function loadFormData() {
       const data = (await getItem('gameTrackerData')) || { years: [], genres: [] };
-      setGenreList(data.genres || []);
+      setGenreList((data.genres || []).slice().sort((a, b) => a.genre.localeCompare(b.genre)));
       setYearOptions(data.years || []);
       setGenresWithColors(data.genres || []); // <-- Guardamos también los colores
 

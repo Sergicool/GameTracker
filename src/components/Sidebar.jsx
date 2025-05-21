@@ -30,7 +30,7 @@ function Sidebar({ isOpen, toggleSidebar, onFilterChange }) {
 
       setFilterData((prev) => ({
         ...prev,
-        genres: stored.genres || [],
+        genres: (stored.genres || []).slice().sort((a, b) => a.genre.localeCompare(b.genre)),
         years: Array.isArray(stored.years) ? [...new Set(stored.years.map(String))] : [],
       }));
     }

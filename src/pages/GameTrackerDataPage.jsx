@@ -35,7 +35,7 @@ function GameTrackerDataPage() {
         const saved = await getItem('gameTrackerData');
         if (saved) {
           setGames(saved.games || []);
-          setGenres(saved.genres || []);
+          setGenres((saved.genres || []).slice().sort((a, b) => a.genre.localeCompare(b.genre)));
           setYears(saved.years || []);
           setTiers(saved.tiers || []);
           setSavedData({
