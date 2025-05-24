@@ -116,10 +116,10 @@ function GameCard({ game, onDelete, disableGameCardModal = false, genresWithColo
                 Category
                 <div className="game-card-modal-category-value">{game.category} - {game.subcategory}</div>
               </div>
-              {game.tierPosition != null && (
+              {game.globalPosition != null && (
                 <div className="game-card-tier-position">
                   Position 
-                  <div className="game-card-modal-position-value">{game.tierPosition}</div>
+                  <div className="game-card-modal-position-value">{game.globalPosition}</div>
                 </div>
               )}
               <div className="game-card-modal-genres-wrapper">

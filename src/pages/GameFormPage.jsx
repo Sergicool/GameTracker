@@ -141,6 +141,7 @@ function GameFormPage() {
         genres: selectedGenres,
         tier: null,
         tierPosition: null,
+        globalPosition: null,
       };
       updatedGames = [...parsed, newGame];
     }

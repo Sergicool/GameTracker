@@ -38,13 +38,25 @@ function UpdateTierListPage() {
             byTier[game.tier].push(game);
         }
 
-        for (const tierName in byTier) {
-            byTier[tierName]
-                .sort((a, b) => (a.tierPosition || 0) - (b.tierPosition || 0))
-                .forEach((g, i) => {
-                    g.tierPosition = i + 1;
-                });
+        // Primero ordenamos los tiers
+        const sortedTierNames = tiers.map(t => t.name);
+
+        let globalIndex = 1;
+        for (const tierName of sortedTierNames) {
+            const gamesInTier = (byTier[tierName] || []).sort((a, b) => (a.tierPosition || 0) - (b.tierPosition || 0));
+            gamesInTier.forEach((g, i) => {
+                g.tierPosition = i + 1;
+                g.globalPosition = globalIndex++;
+            });
         }
+
+        // Juegos sin tier
+        updated
+            .filter(g => !g.tier)
+            .forEach(g => {
+                g.tierPosition = null;
+                g.globalPosition = null;
+            });
 
         return updated;
     };
