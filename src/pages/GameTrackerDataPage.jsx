@@ -82,15 +82,24 @@ function GameTrackerDataPage() {
 
   // --- Funciones para añadir ---
   const handleAddGenre = () => {
-    if (!genre.trim()) {
-      alert('The name of the genre cant be empty.');
+    const genreTrimmed = genre.trim();
+    if (!genreTrimmed) {
+      alert('The name of the genre can\'t be empty.');
       return;
     }
-    if (genres.some(g => g.genre.toLowerCase() === genre.toLowerCase())) {
-      alert('This genre already exists.');
-      return;
+
+    const existingIndex = genres.findIndex(g => g.genre.toLowerCase() === genreTrimmed.toLowerCase());
+
+    if (existingIndex !== -1) {
+      // Actualizar el color del género existente
+      const updatedGenres = [...genres];
+      updatedGenres[existingIndex].color = color;
+      setGenres(updatedGenres);
+    } else {
+      // Agregar nuevo género
+      setGenres([...genres, { genre: genreTrimmed, color }]);
     }
-    setGenres([...genres, { genre: genre.trim(), color }]);
+
     setGenre('');
     setColor('#000000');
   };
@@ -127,28 +136,36 @@ function GameTrackerDataPage() {
       alert('The name of the tier can\'t be empty.');
       return;
     }
-    if (tiers.some(t => t.name.toLowerCase() === nameTrimmed.toLowerCase())) {
-      alert('This tier already exists.');
-      return;
-    }
-    let position = tierPosition;
-    if (!position || position < 1 || position > tiers.length + 1) {
-      position = getNextTierPosition();
-    }
 
-    // Para insertar en medio, desplazamos posiciones
-    const updatedTiers = tiers.map(t => {
-      if (t.position >= position) {
-        return { ...t, position: t.position + 1 };
+    const existingIndex = tiers.findIndex(t => t.name.toLowerCase() === nameTrimmed.toLowerCase());
+
+    if (existingIndex !== -1) {
+      // Actualizar el color del tier existente
+      const updatedTiers = [...tiers];
+      updatedTiers[existingIndex].color = tierColor;
+      setTiers(updatedTiers);
+    } else {
+      let position = tierPosition;
+      if (!position || position < 1 || position > tiers.length + 1) {
+        position = getNextTierPosition();
       }
-      return t;
-    });
 
-    setTiers([...updatedTiers, { name: nameTrimmed, color: tierColor, position }]);
+      // Para insertar en medio, desplazamos posiciones
+      const updatedTiers = tiers.map(t => {
+        if (t.position >= position) {
+          return { ...t, position: t.position + 1 };
+        }
+        return t;
+      });
+
+      setTiers([...updatedTiers, { name: nameTrimmed, color: tierColor, position }]);
+    }
+
     setTierName('');
     setTierColor('#ff0000');
     setTierPosition(null);
   };
+
 
   // --- Funciones para eliminar (con control) ---
 
