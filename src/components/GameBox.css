@@ -1,8 +1,9 @@
 
-.game-box:hover {
-    transform: scale(1.08);
+.game-box.editable:hover {
+    transform: scale(1.1);
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
     border: 2px solid #fff;
+    transition: all 0.2s ease-in-out;
 }
 
 .game-box:active {

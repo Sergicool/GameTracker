@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
 import GameBox from './GameBox';
+import './UnassignedDropZone.css';
 
 function UnassignedDropZone({ games, onUnassign }) {
     const [, drop] = useDrop(() => ({

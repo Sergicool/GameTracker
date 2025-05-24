@@ -2,31 +2,32 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import GameBox from './GameBox';
 
-function TierRow({ tier, games, onDropGame, onReorderGame }) {
-    const [, drop] = useDrop(() => ({
+function TierRow({ tier, games, onDropGame, onReorderGame, editable = true }) {
+    const [, drop] = editable ? useDrop(() => ({
         accept: 'GAME',
         drop: (item, monitor) => {
-            if (!monitor.didDrop()) {
+            if (!monitor.didDrop() && onDropGame) {
                 onDropGame(item.game, tier.name);
             }
         },
-        hover: (item, monitor) => {
-            // Activar hover general si quieres una pista visual cuando no está sobre ningún GameBox
-        }
-    }));
+    }), [editable]) : [{}, null];
 
     return (
         <div className="tier-row" style={{ backgroundColor: tier.color }}>
             <div className="tier-label">{tier.name}</div>
-            <div className="tier-games" ref={drop}>
+            <div className="tier-games" ref={editable ? drop : null}>
                 {games.map((game, index) => (
                     <GameBox
                         key={game.name}
                         game={game}
                         index={index}
-                        onReorder={(draggedGame, targetIndex) =>
-                            onReorderGame(draggedGame, tier.name, targetIndex)
+                        onReorder={
+                            editable && onReorderGame
+                                ? (draggedGame, targetIndex) =>
+                                      onReorderGame(draggedGame, tier.name, targetIndex)
+                                : null
                         }
+                        readOnly={!editable}
                     />
                 ))}
             </div>

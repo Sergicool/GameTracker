@@ -114,6 +114,7 @@ function UpdateTierListPage() {
                             games={gamesByTier[tier.name] || []}
                             onDropGame={handleDropGame}
                             onReorderGame={handleReorderGame}
+                            editable={true}
                         />
                     ))}
                 </div>

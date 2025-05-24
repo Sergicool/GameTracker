@@ -1,0 +1,9 @@
+.tier-list-page h1 {
+    font-family: 'Segoe UI';
+    text-align: center;
+    font-size: 2rem;
+}
+
+.tier-list{
+    padding: 20px;
+}

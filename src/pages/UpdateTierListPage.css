@@ -60,17 +60,3 @@
 .game-box:hover {
     transform: scale(1.05);
 }
-
-.unassigned-zone {
-    background-color: #2b2b2b;
-    padding: 10px;
-    border: 2px dashed #777;
-    margin-top: 20px;
-    border-radius: 8px;
-}
-
-.unassigned-games {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
