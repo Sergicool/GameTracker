@@ -12,6 +12,7 @@ import './App.css';
 // Muestra la cabecera
 // Carga el componente de la pagina dependiendo de la ruta actual
 function App() {
+  
   return (
     <div>
       <Header />

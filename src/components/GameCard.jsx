@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './GameCard.css';
-import ModalBase from './ModalBase';
 import { setItem } from '../utils/db';
+import './GameCard.css';
 
 function GameCard({ game, onDelete, disableGameCardModal = false, genresWithColors = [] }) {
   const [showModal, setShowModal] = useState(false);
@@ -33,10 +32,17 @@ function GameCard({ game, onDelete, disableGameCardModal = false, genresWithColo
     setVisibleCount(Math.max(0, adjustedCount));
   }, [game.genres]);
 
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') closeModal();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
   const visibleGenres = game.genres.slice(0, visibleCount);
   const hiddenCount = game.genres.length - visibleCount;
 
-  // Nuevo getGenreColor usando la prop
   const getGenreColor = (genre) => {
     const found = genresWithColors.find(g => g.genre === genre);
     return found?.color || '#444';
@@ -47,6 +53,12 @@ function GameCard({ game, onDelete, disableGameCardModal = false, genresWithColo
     if (confirmDelete) {
       onDelete(game.name);
       setShowModal(false);
+    }
+  };
+
+  const handleOutsideClick = (e) => {
+    if (e.target.classList.contains('game-card-modal-overlay')) {
+      closeModal();
     }
   };
 
@@ -78,55 +90,71 @@ function GameCard({ game, onDelete, disableGameCardModal = false, genresWithColo
         </div>
       </div>
 
-      <ModalBase isOpen={showModal} onClose={closeModal}>
-        <img src={game.image} alt={game.name} className="modal-image" />
-        <h2 className="modal-title">{game.name}</h2>
+      {showModal && (
+        <div className="game-card-modal-overlay" onClick={handleOutsideClick}>
+          <div className="game-card-modal-content">
+            <div className="game-card-modal-head">
+              <img src={game.image} alt={game.name} className="game-card-modal-image" />
+            </div>
+            <div className="game-card-modal-body">
+              <div className="game-card-modal-title">
+                {game.name}
+              </div>
+              <hr className="game-card-modal-divider" />
 
-        <div className="modal-year">
-          Played in
-          <div className="modal-year-value">{game.year}</div>
-        </div>
+              <div className="game-card-modal-year">
+                Played in
+                <div className="game-card-modal-year-value">{game.year}</div>
+              </div>
+              
+              <div className="game-card-modal-origin">
+                Classification
+                <div className="game-card-modal-origin-value">{game.origin}</div>
+              </div>
+              
+              <div className="game-card-modal-category">
+                Category
+                <div className="game-card-modal-category-value">{game.category} - {game.subcategory}</div>
+              </div>
+              {game.tierPosition != null && (
+                <div className="game-card-tier-position">
+                  Position 
+                  <div className="game-card-modal-position-value">{game.tierPosition}</div>
+                </div>
+              )}
+              <div className="game-card-modal-genres-wrapper">
+                Genres
+                <div className="game-card-modal-genres">
+                  {game.genres.map((genre, i) => (
+                    <span
+                      key={i}
+                      className="game-card-modal-genre-tag"
+                      style={{ backgroundColor: getGenreColor(genre) }}
+                    >
+                      {genre} 
+                    </span>
+                  ))}
+                </div>
+              </div>
 
-        <div className="modal-origin">
-          Classification
-          <div className="modal-origin-value">{game.origin}</div>
-        </div>
-
-        <div className="modal-category">
-          Category
-          <div className="modal-category-value">{game.category} - {game.subcategory}</div>
-        </div>
-
-        <div className="modal-genres-wrapper">
-          Genres
-          <div className="modal-genres">
-            {game.genres.map((genre, i) => (
-              <span
-                key={i}
-                className="modal-genre-tag"
-                style={{ backgroundColor: getGenreColor(genre) }}
-              >
-                {genre}
-              </span>
-            ))}
+              <div className="game-card-modal-buttons">
+                <button
+                  className="edit-button"
+                  onClick={async () => {
+                    await setItem('editGame', game);
+                    window.location.href = '/GameForm';
+                  }}
+                >
+                  Edit
+                </button>
+                <button className="delete-button" onClick={handleDelete}>
+                  Delete
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="modal-buttons">
-          <button
-            className="edit-button"
-            onClick={async () => {
-              await setItem('editGame', game);
-              window.location.href = '/GameForm';
-            }}
-          >
-            Editar
-          </button>
-          <button className="delete-button" onClick={handleDelete}>
-            Eliminar
-          </button>
-        </div>
-      </ModalBase>
+      )}
     </>
   );
 }

@@ -10,7 +10,7 @@ function GamesPage() {
   const [games, setGames] = useState([]);
   const [filters, setFilters] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [genresWithColors, setGenresWithColors] = useState([]);  // <-- nuevo estado para géneros
+  const [genresWithColors, setGenresWithColors] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ function GamesPage() {
         const stored = await getItem('gameTrackerData');
         if (stored) {
           setGames(stored.games || []);
-          setGenresWithColors(stored.genres || []);  // <-- cargamos géneros con colores aquí
+          setGenresWithColors(stored.genres || []);
         }
       } catch (error) {
         console.error('Error loading games from IndexedDB:', error);
@@ -91,7 +91,7 @@ function GamesPage() {
             if (!groups[genre]) groups[genre] = [];
             groups[genre].push(game);
           });
-          continue; // evitar que se añada como conjunto único debajo
+          continue;
         case 'Origin':
           key = game.origin || 'Unknown';
           break;
@@ -111,7 +111,6 @@ function GamesPage() {
 
     const sortedGroups = {};
     for (const key of sortedKeys) {
-      // Ordenar internamente los juegos por nombre
       sortedGroups[key] = groups[key].sort((a, b) => a.name.localeCompare(b.name));
     }
 
@@ -145,7 +144,7 @@ function GamesPage() {
                       key={game.name}
                       game={game}
                       onDelete={handleDeleteGame}
-                      genresWithColors={genresWithColors}  // <-- pasamos prop aquí
+                      genresWithColors={genresWithColors}
                     />
                   ))}
                 </div>

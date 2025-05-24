@@ -45,7 +45,7 @@ const MenuButton = () => {
             <FaPlus/>
             Add new game
           </button>
-          <button className="dropdown-item" onClick={() => goToPageName('/UpdateTierList')}>
+          <button className="dropdown-item" onClick={() => goToPageName('/UpdateTierListPage')}>
             <FaList/>
             Update tier list
           </button>

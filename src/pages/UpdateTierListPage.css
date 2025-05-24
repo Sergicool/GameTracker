@@ -1,0 +1,76 @@
+/* UpdateTierListPage.css */
+
+.update-tier-list-page {
+    padding: 20px;
+    background-color: #1e1e1e;
+    color: white;
+    font-family: sans-serif;
+}
+
+.tier-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tier-row {
+    display: flex;
+    align-items: center;
+    min-height: 90px;
+    border: 1px solid #333;
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.tier-label {
+    width: 100px;
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.tier-games {
+    display: flex;
+    flex-wrap: wrap; /* ✅ Permite que los juegos salten de línea */
+    gap: 8px;
+    flex: 1;
+    padding: 8px 12px;
+    min-height: 80px;
+    background-color: #111;
+    align-items: flex-start; /* ✅ Alinea al principio para varias filas */
+    transition: background-color 0.2s ease;
+    /* max-height: 220px; */
+    /* overflow-y: auto; */
+}
+
+.game-box {
+    width: 64px;
+    height: 64px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    border: 2px solid #888;
+    transition: transform 0.2s;
+}
+
+.game-box:hover {
+    transform: scale(1.05);
+}
+
+.unassigned-zone {
+    background-color: #2b2b2b;
+    padding: 10px;
+    border: 2px dashed #777;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.unassigned-games {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}

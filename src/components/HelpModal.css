@@ -12,7 +12,7 @@
 }
 
 /* Contenido modal reutilizado con estilo oscuro */
-.modal-content.help-modal-content {
+.modal-content {
     background-color: #2a2a2a;
     padding: 2rem;
     border-radius: 10px;
