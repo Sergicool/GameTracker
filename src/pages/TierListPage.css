@@ -1,9 +1,22 @@
+.tier-list-page {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
 .tier-list-page h1 {
     font-family: 'Segoe UI';
     text-align: center;
     font-size: 2rem;
 }
 
+.sidebar-container {
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
 .tier-list{
+    flex: 1;
     padding: 20px;
+    overflow: hidden;
 }

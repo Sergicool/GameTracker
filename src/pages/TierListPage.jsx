@@ -54,13 +54,15 @@ function TierListPage() {
 
     return (
         <div className="tier-list-page" style={{ display: 'flex' }}>
-            <Sidebar
-                isOpen={isSidebarOpen}
-                toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-                onFilterChange={(newFilters) => setFilters(newFilters)}
-                showGroupBy={false}
-            />
-            <div className="tier-list" style={{ flex: 1, padding: 20 }}>
+            <div className="sidebar-container">
+                <Sidebar
+                    isOpen={isSidebarOpen}
+                    toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+                    onFilterChange={(newFilters) => setFilters(newFilters)}
+                    showGroupBy={false}
+                />
+            </div>
+            <div className="tier-list">
                 <h1>Tier List</h1>
                 {tiers.map(tier => (
                     <TierRow

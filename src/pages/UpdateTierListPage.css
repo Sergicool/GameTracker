@@ -13,40 +13,6 @@
     gap: 6px;
 }
 
-.tier-row {
-    display: flex;
-    align-items: center;
-    min-height: 90px;
-    border: 1px solid #333;
-    padding: 0;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.tier-label {
-    width: 100px;
-    font-weight: bold;
-    font-size: 18px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 1px 1px 2px #000;
-}
-
-.tier-games {
-    display: flex;
-    flex-wrap: wrap; /* ✅ Permite que los juegos salten de línea */
-    gap: 8px;
-    flex: 1;
-    padding: 8px 12px;
-    min-height: 80px;
-    background-color: #111;
-    align-items: flex-start; /* ✅ Alinea al principio para varias filas */
-    transition: background-color 0.2s ease;
-    /* max-height: 220px; */
-    /* overflow-y: auto; */
-}
-
 .game-box {
     width: 64px;
     height: 64px;

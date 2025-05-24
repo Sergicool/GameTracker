@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
 import GameBox from './GameBox';
+import './TierRow.css';
 
 function TierRow({ tier, games, onDropGame, onReorderGame, editable = true }) {
     const [, drop] = editable ? useDrop(() => ({
