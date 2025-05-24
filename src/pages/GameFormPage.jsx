@@ -31,11 +31,12 @@ function GameFormPage() {
   useEffect(() => {
     async function loadFormData() {
       const data = (await getItem('gameTrackerData')) || { years: [], genres: [] };
+      const editData = await getItem('editGame');
+
       setGenreList((data.genres || []).slice().sort((a, b) => a.genre.localeCompare(b.genre)));
       setYearOptions(data.years || []);
-      setGenresWithColors(data.genres || []); // <-- Guardamos también los colores
+      setGenresWithColors(data.genres || []);
 
-      const editData = await getItem('editGame');
       if (editData) {
         isEditingRef.current = true;
         setName(editData.name || '');
@@ -47,15 +48,31 @@ function GameFormPage() {
         setSubcategory(editData.subcategory || '');
         setSelectedGenres(editData.genres || []);
 
-        initialFormRef.current = {
-          name: editData.name || '',
-          image: editData.image || '',
-          year: editData.year || '',
-          origin: editData.origin || '',
-          category: editData.category || '',
-          subcategory: editData.subcategory || '',
-          genres: editData.genres || [],
-        };
+        // 👉 Delay el guardado hasta después de setState
+        setTimeout(() => {
+          initialFormRef.current = {
+            name: editData.name || '',
+            image: editData.image || '',
+            year: editData.year || '',
+            origin: editData.origin || '',
+            category: editData.category || '',
+            subcategory: editData.subcategory || '',
+            genres: editData.genres || [],
+          };
+        }, 0);
+      } else {
+        // Igual aquí
+        setTimeout(() => {
+          initialFormRef.current = {
+            name: '',
+            image: '',
+            year: '',
+            origin: '',
+            category: '',
+            subcategory: '',
+            genres: [],
+          };
+        }, 0);
       }
 
       window.addEventListener('beforeunload', handleBeforeUnload);
@@ -74,6 +91,7 @@ function GameFormPage() {
       removeItem('editGame');
     };
   }, []);
+
   
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -95,16 +113,18 @@ function GameFormPage() {
 
   const hasUnsavedChanges = () => {
     const initial = initialFormRef.current;
-    return (
+    const changed =
       name !== initial.name ||
       imageUrl !== initial.image ||
       yearPlayed !== initial.year ||
       origin !== initial.origin ||
       category !== initial.category ||
       subcategory !== initial.subcategory ||
-      JSON.stringify(selectedGenres) !== JSON.stringify(initial.genres)
-    );
+      JSON.stringify(selectedGenres) !== JSON.stringify(initial.genres);
+
+    return changed;
   };
+
 
   const handleSubmit = async () => {
     const stored = (await getItem('gameTrackerData')) || { games: [] };

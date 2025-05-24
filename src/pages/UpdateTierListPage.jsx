@@ -4,11 +4,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import TierRow from '../components/TierRow';
 import { getItem, setItem } from '../utils/db.js';
 import './UpdateTierListPage.css';
+import { usePrompt } from '../utils/usePrompt';
 import UnassignedDropZone from '../components/UnassignedDropZone';
 
 function UpdateTierListPage() {
     const [tiers, setTiers] = useState([]);
     const [games, setGames] = useState([]);
+    const [originalGames, setOriginalGames] = useState([]);
+
 
     useEffect(() => {
         async function fetchData() {
@@ -16,10 +19,15 @@ function UpdateTierListPage() {
             if (stored) {
                 setTiers([...stored.tiers].sort((a, b) => a.position - b.position));
                 setGames(stored.games || []);
+                setOriginalGames(stored.games || []);
             }
         }
         fetchData();
     }, []);
+
+    const isDirty = JSON.stringify(games) !== JSON.stringify(originalGames);
+
+    usePrompt('You have unsaved changes. Are you sure you want to leave?', isDirty);
 
     const gamesByTier = {};
     tiers.forEach((tier) => {
@@ -95,6 +103,7 @@ function UpdateTierListPage() {
             const updatedGames = updateTierPositions(games);
             const stored = await getItem('gameTrackerData');
             await setItem('gameTrackerData', { ...stored, games: updatedGames });
+            setOriginalGames(updatedGames); // ✅ reset
             alert('Tier list saved successfully!');
         } catch (e) {
             alert('Error saving tier list: ' + e.message);
