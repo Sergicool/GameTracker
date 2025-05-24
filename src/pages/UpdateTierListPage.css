@@ -7,6 +7,12 @@
     font-family: sans-serif;
 }
 
+.update-tier-list-page h1 {
+    font-family: 'Segoe UI';
+    text-align: center;
+    font-size: 2rem;
+}
+
 .tier-list {
     display: flex;
     flex-direction: column;
@@ -25,4 +31,20 @@
 
 .game-box:hover {
     transform: scale(1.05);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.save-button {
+    margin-top: 20px;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background-color: #43a047;
+    color: white;
 }

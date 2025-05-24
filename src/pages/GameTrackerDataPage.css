@@ -24,8 +24,9 @@
   background-color: #2a2a3d;
   border-radius: 12px;
   padding: 1rem;
-  flex: 1 1 300px;
-  max-width: 350px;
+  flex: 1;
+  height: 600px;
+  max-width: 450px;
   box-shadow: 0 0 10px #111;
   display: flex;
   flex-direction: column;
@@ -85,7 +86,12 @@
   margin-top: 0;
   flex-grow: 1;
   overflow-y: auto;
-  max-height: 250px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.sidebar-content::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
 }
 
 .item-list li {
@@ -208,6 +214,7 @@
 }
 
 .modal-content h3 {
+  text-align: center;
   margin-top: 0;
   margin-bottom: 1rem;
   font-weight: 700;
@@ -221,7 +228,7 @@
 .modal-buttons {
   margin-top: 1.5rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 1rem;
 }
 

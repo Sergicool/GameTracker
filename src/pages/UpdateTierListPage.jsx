@@ -138,8 +138,9 @@ function UpdateTierListPage() {
                         );
                     }}
                 />
-
-                <button onClick={handleSave}>Save Changes</button>
+                <div className='button-container'>
+                    <button className='save-button' onClick={handleSave}>Save Changes</button>
+                </div>
             </div>
         </DndProvider>
     );

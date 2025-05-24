@@ -341,7 +341,7 @@ function GameTrackerDataPage() {
 
         {/* Años */}
         <section className="data-section">
-          <h2 className='data-section-title'>Años</h2>
+          <h2 className='data-section-title'>Year</h2>
           <div className="input-row">
             <input
               type="number"
@@ -377,7 +377,7 @@ function GameTrackerDataPage() {
           <div className="input-row tier-input-row">
             <input
               type="text"
-              placeholder="Nombre tier"
+              placeholder="Ej: A"
               value={tierName}
               onChange={e => setTierName(e.target.value)}
             />
@@ -437,13 +437,13 @@ function GameTrackerDataPage() {
 
       <div className="action-buttons">
         <button onClick={handleSaveChanges} disabled={!hasUnsavedChanges()}>
-          Guardar cambios
+          Save changes
         </button>
 
-        <button onClick={handleDownloadBackup}>Descargar Backup</button>
+        <button onClick={handleDownloadBackup}>Download backup</button>
 
         <label htmlFor="upload-backup" className="upload-label">
-          Cargar Backup
+          Load backup
           <input
             type="file"
             id="upload-backup"
@@ -458,20 +458,20 @@ function GameTrackerDataPage() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3>Confirmar carga de backup</h3>
-            <p>El backup contiene:</p>
+            <h3>Confirm backup upload</h3>
+            <p>The backup contains:</p>
             <ul>
-              <li>Juegos: {backupSummary.games}</li>
-              <li>Géneros: {backupSummary.genres}</li>
-              <li>Años: {backupSummary.years}</li>
+              <li>Games: {backupSummary.games}</li>
+              <li>Genres: {backupSummary.genres}</li>
+              <li>Years: {backupSummary.years}</li>
               <li>Tiers: {backupSummary.tiers}</li>
             </ul>
             <p>
-              Cargar el backup reemplazará completamente la base de datos actual. ¿Deseas continuar?
+              Uploading the backup will completely replace the current database. Do you want to continue?
             </p>
             <div className="modal-buttons">
-              <button onClick={confirmLoadBackup}>Confirmar</button>
-              <button onClick={cancelLoadBackup}>Cancelar</button>
+              <button onClick={confirmLoadBackup}>Confirm</button>
+              <button onClick={cancelLoadBackup}>Cancel</button>
             </div>
           </div>
         </div>

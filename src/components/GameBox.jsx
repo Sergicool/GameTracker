@@ -53,7 +53,7 @@ function GameBox({ game, index, onReorder, readOnly }) {
                 backgroundImage: `url(${game.image})`,
                 backgroundSize: 'cover',
                 borderRadius: 4,
-                border: '3px solid #ccc'
+                border: '3px solid rgba(236, 236, 236, 0.79)'
             }}
         />
     );
