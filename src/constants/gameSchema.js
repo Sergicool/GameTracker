@@ -54,7 +54,7 @@ export const gameTrackerData = {
             ],
             "tier": null,
             "tierPosition": null,
-            "globalPosition ": null
+            "globalPosition": null
         }
     ]
 }

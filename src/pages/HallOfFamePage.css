@@ -1,0 +1,170 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Oculta scroll global */
+}
+
+.hall-of-fame-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden; /* Evita scroll en el contenedor principal */
+}
+
+.subheader {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  background-color: #242424;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.favorites-by-year {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+/* Subheader buttons*/
+.subheader button {
+    padding: 1.2rem;
+    height: 60px;
+    width: 320px;
+    font-size: 1rem;
+    font-family: 'Segoe UI';
+    border: none;
+    background-color: #242424;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.subheader button:hover {
+    background-color: #666;
+}
+
+.subheader-dropdown {
+    position: relative;
+}
+
+/* Subheader dropdowns*/
+.subheader-dropdown-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+
+    padding: 0.6rem 1.2rem;
+
+    background-color: #444;
+    color: white;
+    border: none;
+    cursor: pointer;
+
+    font-size: 1rem;
+}
+
+.subheader-dropdown-menu {
+    position: absolute;
+    left: 0;
+    background-color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    z-index: 10;
+    width: 300px;
+    max-height: 300px;
+    /* Ajusta según lo que quieras mostrar */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+}
+
+.subheader-dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.subheader-dropdown-menu::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.subheader-dropdown-menu li {
+    padding: 0.6rem 1rem;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.subheader-dropdown-menu li:hover {
+    background-color: #555;
+}
+
+/* Leaderboards */
+.leaderboard-title {
+    text-align: center;
+    font-family: 'Segoe UI';
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #e4e4e4;
+}
+
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #444;
+    color: white;
+}
+
+.leaderboard-entry.position-1 {
+    background-color: gold;
+    color: black;
+}
+
+.leaderboard-entry.position-2 {
+    background-color: silver;
+    color: black;
+}
+
+.leaderboard-entry.position-3 {
+    background-color: #cd7f32;
+    color: black;
+}
+
+.leaderboard-entry.position-4,
+.leaderboard-entry.position-5,
+.leaderboard-entry.position-6,
+.leaderboard-entry.position-7,
+.leaderboard-entry.position-8,
+.leaderboard-entry.position-9,
+.leaderboard-entry.position-10 {
+    background-color: #777;
+}
+
+.leaderboard-entry:not(.position-1):not(.position-2):not(.position-3):not(.position-4):not(.position-5):not(.position-6):not(.position-7):not(.position-8):not(.position-9):not(.position-10) {
+    background-color: #333;
+}
+
+.leaderboard-image {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.favorite-year-block {
+    margin-bottom: 2rem;
+}
