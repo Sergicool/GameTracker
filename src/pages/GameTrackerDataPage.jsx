@@ -93,7 +93,7 @@ function GameTrackerDataPage() {
     if (existingIndex !== -1) {
       // Actualizar el color del género existente
       const updatedGenres = [...genres];
-      updatedGenres[existingIndex].color = color;
+      updatedGenres[existingIndex] = { ...updatedGenres[existingIndex], color };
       setGenres(updatedGenres);
     } else {
       // Agregar nuevo género
@@ -142,7 +142,7 @@ function GameTrackerDataPage() {
     if (existingIndex !== -1) {
       // Actualizar el color del tier existente
       const updatedTiers = [...tiers];
-      updatedTiers[existingIndex].color = tierColor;
+      updatedTiers[existingIndex] = { ...updatedTiers[existingIndex], color: tierColor };
       setTiers(updatedTiers);
     } else {
       let position = tierPosition;
@@ -222,7 +222,12 @@ function GameTrackerDataPage() {
   const handleSaveChanges = async () => {
     try {
       await setItem('gameTrackerData', { genres, years, tiers, games });
-      setSavedData({ genres, years, tiers, games });
+      setSavedData({
+        genres: JSON.parse(JSON.stringify(genres)),
+        years: [...years],
+        tiers: JSON.parse(JSON.stringify(tiers)),
+        games: JSON.parse(JSON.stringify(games)),
+      });
       alert('Changes saved!');
     } catch (error) {
       alert('Error saving changes');
