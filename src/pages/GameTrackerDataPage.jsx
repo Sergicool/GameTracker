@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaPlus, FaTrashAlt, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { usePrompt } from '../utils/usePrompt';
 import './GameTrackerDataPage.css';
-
+import ColorDropdownPicker from '../components/ColorDropdownPicker';
 import { getItem, setItem } from '../utils/db.js';
 
 function GameTrackerDataPage() {
@@ -328,11 +328,9 @@ function GameTrackerDataPage() {
               value={genre}
               onChange={e => setGenre(e.target.value)}
             />
-            <input
-              type="color"
-              value={color}
-              onChange={e => setColor(e.target.value)}
-              title="Color"
+            <ColorDropdownPicker
+              color={color}
+              onChange={setColor}
             />
             <button onClick={handleAddGenre} title="Agregar género">
               <FaPlus />
@@ -398,11 +396,9 @@ function GameTrackerDataPage() {
               value={tierName}
               onChange={e => setTierName(e.target.value)}
             />
-            <input
-              type="color"
-              value={tierColor}
-              onChange={e => setTierColor(e.target.value)}
-              title="Color"
+            <ColorDropdownPicker
+              color={tierColor}
+              onChange={setTierColor}
             />
             <input
               type="number"
