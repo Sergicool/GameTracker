@@ -402,7 +402,7 @@ function GameTrackerDataPage() {
             />
             <input
               type="number"
-              placeholder={`Posición (1-${tiers.length + 1})`}
+              placeholder={`Position (1-${tiers.length + 1})`}
               value={tierPosition || ''}
               min="1"
               max={tiers.length + 1}
