@@ -1,7 +1,17 @@
-/* Estilos generales de la app */
-body {
+html, body {
   background: linear-gradient(#111114);
   color: #fff;
   margin: 0;
   font-family: sans-serif;
+
+  /* Ocultar scrollbar (pero permitir scroll) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE/Edge */
+  overflow-y: auto; /* mantiene la funcionalidad */
+
+  height: 100vh;
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }

@@ -1,31 +1,36 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden; /* Oculta scroll global */
-}
-
 .hall-of-fame-page {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  box-sizing: border-box;
-  overflow: hidden; /* Evita scroll en el contenedor principal */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .subheader {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-  background-color: #242424;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: #242424;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .favorites-by-year {
   flex-grow: 1;
+  padding: 1rem;
   overflow-y: auto;
-  padding-right: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 2rem;
+}
+
+.favorite-year-block h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #f0f0f0;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 /* Subheader buttons*/
@@ -113,37 +118,113 @@ html, body {
     color: #e4e4e4;
 }
 
+.leaderboard-wrapper {
+  flex-grow: 1;
+  overflow-y: auto;
+  flex-direction: column;
+}
+
 .leaderboard {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-}
-
-.leaderboard-entry {
-    display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem;
-    border-radius: 10px;
-    background-color: #444;
-    color: white;
 }
 
+/* Entries */
+
+.leaderboard-entry {
+    border: 6px solid transparent;
+    width: 50%;
+    gap: 1rem;
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    background-color: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+    /* fondo tipo carbón */
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-clip: padding-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.leaderboard-entry::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 12px;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+}
+
+/* Oro animado */
 .leaderboard-entry.position-1 {
-    background-color: gold;
-    color: black;
+    border-color: gold;
+    animation: shimmerGold 3s linear infinite;
 }
 
 .leaderboard-entry.position-2 {
-    background-color: silver;
-    color: black;
+    border-color: silver;
+    animation: shimmerSilver 3s linear infinite;
 }
 
 .leaderboard-entry.position-3 {
-    background-color: #cd7f32;
-    color: black;
+    border-color: #cd7f32;
+    /* bronce */
+    animation: shimmerBronze 3s linear infinite;
 }
 
+/* Animaciones sutiles */
+@keyframes shimmerGold {
+    0% {
+        border-color: gold;
+    }
+
+    50% {
+        border-color: #ffef8b;
+    }
+
+    100% {
+        border-color: gold;
+    }
+}
+
+@keyframes shimmerSilver {
+    0% {
+        border-color: silver;
+    }
+
+    50% {
+        border-color: #dcdcdc;
+    }
+
+    100% {
+        border-color: silver;
+    }
+}
+
+@keyframes shimmerBronze {
+    0% {
+        border-color: #cd7f32;
+    }
+
+    50% {
+        border-color: #e3a76c;
+    }
+
+    100% {
+        border-color: #cd7f32;
+    }
+}
+
+/* Posiciones 4 a 10: destaque medio */
 .leaderboard-entry.position-4,
 .leaderboard-entry.position-5,
 .leaderboard-entry.position-6,
@@ -151,20 +232,33 @@ html, body {
 .leaderboard-entry.position-8,
 .leaderboard-entry.position-9,
 .leaderboard-entry.position-10 {
-    background-color: #777;
+    background-color: #3d3d3d;
+    /* gris medio */
+    border: 2px solid #999;
+    /* borde más sutil que el podio */
+    color: #eee;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(150, 150, 150, 0.4);
+    transition: background-color 0.3s ease;
 }
 
+/* Posiciones 11 en adelante: destaque bajo */
 .leaderboard-entry:not(.position-1):not(.position-2):not(.position-3):not(.position-4):not(.position-5):not(.position-6):not(.position-7):not(.position-8):not(.position-9):not(.position-10) {
-    background-color: #333;
+    border: 2px solid #535353;
+    /* borde más sutil que el podio */
+    background-color: #222;
+    /* gris oscuro */
+    color: #ccc;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: background-color 0.3s ease;
 }
 
+/* Para mantener la imagen con bordes redondeados y tamaño fijo */
 .leaderboard-image {
-    width: 64px;
+    width: 128px;
     height: 64px;
     object-fit: cover;
     border-radius: 8px;
-}
-
-.favorite-year-block {
-    margin-bottom: 2rem;
+    flex-shrink: 0;
 }

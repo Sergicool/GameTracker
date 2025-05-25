@@ -120,12 +120,10 @@ function HallOfFamePage() {
         />
       </div>
 
-      {filterType !== "favorites" && (
+      <div className="leaderboard-wrapper">
         <h2 className="leaderboard-title">
-          {(() => {
+          {filterType === "favorites" ? "Favorites of all years" : (() => {
             switch (filterType) {
-              case "favorites":
-                return "Favorites of all years";
               case "global":
                 return "Global Top";
               case "year":
@@ -141,35 +139,35 @@ function HallOfFamePage() {
             }
           })()}
         </h2>
-      )}
 
-      {filterType === "favorites" && (
-        <div className="favorites-by-year">
-          {Object.entries(favoriteByYear).map(([year, game]) => (
-            <div key={year} className="favorite-year-block">
-              <h2>{year}</h2>
-              <GameCard game={game} genresWithColors={data.genres} />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {filterType !== "favorites" && (
-        <div className="leaderboard">
-          {filteredGames
-            .sort((a, b) => a.globalPosition - b.globalPosition)
-            .map((game, index) => (
-              <div
-                key={game.name}
-                className={`leaderboard-entry position-${index + 1}`}
-              >
-                <span className="position-number">{index + 1}</span>
-                <img src={game.image} className="leaderboard-image" alt={game.name} />
-                <span className="leaderboard-name">{game.name}</span>
+        {filterType === "favorites" && (
+          <div className="favorites-by-year">
+            {Object.entries(favoriteByYear).map(([year, game]) => (
+              <div key={year} className="favorite-year-block">
+                <h2>{year}</h2>
+                <GameCard game={game} genresWithColors={data.genres} />
               </div>
             ))}
-        </div>
-      )}
+          </div>
+        )}
+
+        {filterType !== "favorites" && (
+          <div className="leaderboard">
+            {filteredGames
+              .sort((a, b) => a.globalPosition - b.globalPosition)
+              .map((game, index) => (
+                <div
+                  key={game.name}
+                  className={`leaderboard-entry position-${index + 1}`}
+                >
+                  <span className="position-number">{index + 1}</span>
+                  <img src={game.image} className="leaderboard-image" alt={game.name} />
+                  <span className="leaderboard-name">{game.name}</span>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
