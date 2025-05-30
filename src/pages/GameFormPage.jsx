@@ -228,7 +228,7 @@ function GameFormPage() {
           origin,
         }}
         disableGameCardModal={true}
-        genresWithColors={genresWithColors} // <-- ✅ pasamos el prop correctamente
+        genresWithColors={genresWithColors}
       />
     </div>
   );

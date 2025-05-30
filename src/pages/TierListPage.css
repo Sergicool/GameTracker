@@ -1,7 +1,5 @@
 .tier-list-page {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
+    margin-bottom: 40px;
 }
 
 .tier-list-page h1 {
@@ -13,10 +11,4 @@
 .sidebar-container {
     overflow-y: auto;
     flex-shrink: 0;
-}
-
-.tier-list{
-    flex: 1;
-    padding: 20px;
-    overflow: hidden;
 }

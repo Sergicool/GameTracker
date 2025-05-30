@@ -1,25 +1,15 @@
 /* General page styles */
-.form-page {
-  display: flex;
-  justify-content: space-between; /* Space between form and preview */
-  align-items: center; /* Vertically center content */
-  padding: 40px;
-  gap: 40px;
-  height: 100vh; /* Full height */
-  background-color: #121212; /* Dark background */
-  color: #f0f0f0; /* Light text by default */
-  box-sizing: border-box;
-}
 
-/* Form container */
-.game-form {
+/* Form container (For some reason it has to be in GameForm.css)*/
+
+/*.game-form {
   flex: 1;
   max-width: 500px;
   padding: 30px;
-  background-color: #1e1e1e; /* Slightly lighter than background */
+  background-color: #1e1e1e;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
+}*/
 
 /* Titles */
 h2, h3 {
